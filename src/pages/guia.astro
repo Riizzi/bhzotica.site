@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+
+const L = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const Ls = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+const campos = [
+  { t: 'Esférico (ESF)', d: Ls },
+  { t: 'Cilíndrico (CIL)', d: Ls },
+  { t: 'Eixo', d: Ls },
+  { t: 'Adição (AD)', d: Ls },
+  { t: 'DNP', d: Ls },
+];
+const etapas = [
+  { t: 'Primeiros dias', d: L },
+  { t: 'Primeira semana', d: L },
+  { t: 'Depois de adaptado', d: L },
+];
+const cuidados = [
+  { t: 'Limpeza', d: Ls },
+  { t: 'Onde guardar', d: Ls },
+  { t: 'Calor e sol', d: Ls },
+  { t: 'Ajustes', d: Ls },
+];
+---
+<Base
+  title="Guia | BHZ Óptica"
+  description="Como ler sua receita, o que esperar do primeiro multifocal e como cuidar dos seus óculos."
+  current="guia"
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <h1 class="page-h1">Guia</h1>
+      <div class="page-hero-row">
+        <p class="lede">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+        <nav class="guia-toc" aria-label="Neste guia">
+          <a href="#receita">Como ler sua receita</a>
+          <a href="#multifocal">Seu primeiro multifocal</a>
+          <a href="#cuidados">Cuidados com os óculos</a>
+          <a href="#infantil">Primeiros óculos da criança</a>
+        </nav>
+      </div>
+      <p class="todo">Escrever a introdução do guia</p>
+    </div>
+  </section>
+
+  <!-- RECEITA -->
+  <section class="section guia-sec" id="receita" aria-labelledby="rec-h">
+    <div class="wrap guia-grid">
+      <div class="guia-intro">
+        <h2 class="display" id="rec-h">Como ler sua receita</h2>
+        <p class="lede">{L}</p>
+        <p class="todo">Escrever o que é cada campo da receita, em linguagem simples</p>
+      </div>
+      <figure class="rx" aria-label="Exemplo de receita de óculos">
+        <figcaption class="rx-head"><b>Receita de exemplo</b><span>Valores ilustrativos</span></figcaption>
+        <table>
+          <thead><tr><th scope="col"></th><th scope="col">ESF</th><th scope="col">CIL</th><th scope="col">Eixo</th><th scope="col">AD</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">OD</th><td>−1,25</td><td>−0,50</td><td>180°</td><td>+2,00</td></tr>
+            <tr><th scope="row">OE</th><td>−1,00</td><td>−0,75</td><td>170°</td><td>+2,00</td></tr>
+          </tbody>
+        </table>
+        <p class="rx-foot">DNP: 31 / 32 mm</p>
+      </figure>
+    </div>
+    <div class="wrap">
+      <ul class="index-list index-static guia-list">
+        {campos.map((c) => <li class="index-row"><h3 class="index-t">{c.t}</h3><p class="index-d">{c.d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- MULTIFOCAL -->
+  <section class="section guia-sec guia-dark" id="multifocal" aria-labelledby="mf-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 class="display" id="mf-h">Seu primeiro multifocal</h2>
+        <div class="sec-head-side"><p class="lede">{L}</p></div>
+      </header>
+      <ol class="steps">
+        {etapas.map((e) => <li><h3>{e.t}</h3><p>{e.d}</p></li>)}
+      </ol>
+      <p class="todo">Escrever as dicas de adaptação ao multifocal</p>
+    </div>
+  </section>
+
+  <!-- CUIDADOS -->
+  <section class="section guia-sec" id="cuidados" aria-labelledby="cu-h">
+    <div class="wrap guia-grid guia-grid-img">
+      <div class="guia-photo"><Img name="sol-4" alt="Óculos de sol sobre o balcão de vidro" sizes="(min-width: 900px) 40vw, 100vw" /></div>
+      <div>
+        <h2 class="display" id="cu-h">Cuidados com os óculos</h2>
+        <ul class="index-list index-static guia-list">
+          {cuidados.map((c) => <li class="index-row"><h3 class="index-t">{c.t}</h3><p class="index-d">{c.d}</p></li>)}
+        </ul>
+        <p class="todo">Escrever os cuidados do dia a dia e quando voltar na loja para ajuste</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFANTIL -->
+  <section class="section guia-sec guia-kids" id="infantil" aria-labelledby="inf-h">
+    <div class="wrap guia-grid">
+      <h2 class="display" id="inf-h">Primeiros óculos da criança</h2>
+      <div class="prose">
+        <p>{L}</p>
+        <p>{L}</p>
+        <p class="todo">Confirmar se a loja trabalha com armação infantil</p>
+      </div>
+    </div>
+  </section>
+</Base>

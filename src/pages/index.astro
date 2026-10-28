@@ -21,6 +21,15 @@ const servicos = [
   { t: 'Lentes de contato', d: 'Linha Acuvue: diárias, quinzenais, mensais e para astigmatismo.', img: 'contato' },
 ];
 
+const faqs = [
+  'Quanto tempo leva para os óculos ficarem prontos?',
+  'Posso parcelar?',
+  'Vocês aceitam receita de qualquer oftalmologista?',
+  'Dá para trocar só as lentes da minha armação?',
+  'Os óculos têm garantia?',
+  'Vocês fazem ajuste e conserto?',
+];
+
 const reviews = [
   { name: 'Dj Sid Pacheco', when: 'há 6 meses', text: 'Excelente atendimento e ótimos preços! Fui muito bem atendido pelo Warllen! Super indico!' },
   { name: 'Ana Paula Oliveira', when: 'há 2 meses', text: 'Excelente atendimento e lindos modelos de óculos de sol e de grau.' },
@@ -96,6 +105,7 @@ const reviews = [
       <div class="promo-side">
         <p>Na compra de armação com lente, a segunda armação é por nossa conta.</p>
         <p class="promo-note">Condições na loja.</p>
+        <p class="todo">Confirmar se a promoção ainda vale e as condições</p>
       </div>
     </div>
     <PixelGlasses cols={72} class="promo-mark" />
@@ -115,6 +125,23 @@ const reviews = [
         <p class="lede">Balcões de vidro com as armações à mostra, espelho em cada lugar e cadeiras para escolher sem pressa. Estacionamento gratuito no próprio shopping.</p>
         <a class="link-arrow" href="/espaco">Conhecer o espaço</a>
       </div>
+    </div>
+  </section>
+
+  <!-- GUIA (chamada) -->
+  <section class="section guia-teaser" aria-labelledby="gt-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 class="display" id="gt-h">Guia</h2>
+        <div class="sec-head-side"><p class="lede">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p></div>
+      </header>
+      <ul class="gt-list">
+        <li><a href="/guia#receita"><b>Como ler sua receita</b><span>Lorem ipsum dolor sit amet.</span></a></li>
+        <li><a href="/guia#multifocal"><b>Seu primeiro multifocal</b><span>Lorem ipsum dolor sit amet.</span></a></li>
+        <li><a href="/guia#cuidados"><b>Cuidados com os óculos</b><span>Lorem ipsum dolor sit amet.</span></a></li>
+        <li><a href="/guia#infantil"><b>Primeiros óculos da criança</b><span>Lorem ipsum dolor sit amet.</span></a></li>
+      </ul>
+      <p class="todo">Escrever uma frase de chamada para o guia</p>
     </div>
   </section>
 
@@ -140,6 +167,24 @@ const reviews = [
     </div>
   </section>
 
+  <!-- PERGUNTAS FREQUENTES -->
+  <section class="section faq" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 class="display" id="faq-h">Perguntas frequentes</h2>
+        <p class="todo">Responder as perguntas com o dono</p>
+      </div>
+      <div class="faq-list">
+        {faqs.map((q) => (
+          <details>
+            <summary>{q}</summary>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ATENDIMENTO -->
   <section class="section atendimento" id="atendimento" aria-labelledby="at-h">
     <div class="wrap at-grid">
@@ -149,7 +194,7 @@ const reviews = [
         <dl class="info">
           <div><dt>Endereço</dt><dd>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</dd></div>
           <div><dt>Telefone</dt><dd><a href="tel:+553133245968">{PHONE_DISPLAY}</a></dd></div>
-          <div><dt>Horário</dt><dd><span class="todo-inline">a confirmar com a loja</span></dd></div>
+          <div><dt>Horário</dt><dd><span class="todo-inline">Confirmar horário</span></dd></div>
           <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no shopping</dd></div>
           <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação</dd></div>
         </dl>

@@ -9,11 +9,12 @@ import PixelGlasses from '../components/PixelGlasses.astro';
 import WaIcon from '../components/WaIcon.astro';
 import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL } from '../data';
 
-interface Props { title: string; description: string; current?: 'home' | 'espaco' }
+interface Props { title: string; description: string; current?: 'home' | 'espaco' | 'guia' }
 const { title, description, current = 'home' } = Astro.props;
 const nav = [
   { href: '/#colecao', label: 'Coleção' },
   { href: '/#lentes', label: 'Lentes' },
+  { href: '/guia', label: 'Guia', key: 'guia' },
   { href: '/espaco', label: 'O espaço', key: 'espaco' },
 ];
 ---
@@ -83,7 +84,7 @@ const nav = [
             </div>
             <div>
               <h2 class="footer-h">Navegue</h2>
-              <p><a href="/">Início</a><br /><a href="/#colecao">Coleção</a><br /><a href="/#lentes">Lentes</a><br /><a href="/espaco">O espaço</a></p>
+              <p><a href="/">Início</a><br /><a href="/#colecao">Coleção</a><br /><a href="/#lentes">Lentes</a><br /><a href="/guia">Guia</a><br /><a href="/espaco">O espaço</a></p>
             </div>
           </div>
         </div>
