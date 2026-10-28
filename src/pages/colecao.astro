@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import LensScene from '../components/LensScene.astro';
+import Img from '../components/Img.astro';
+import Icon from '../components/Icon.astro';
+import PixelGlasses from '../components/PixelGlasses.astro';
+import { wa, COLECAO } from '../data';
+
+const servicos = [
+  { t: 'Óculos de grau', d: 'Armação e lentes escolhidas para a sua receita e o seu rosto.' },
+  { t: 'Óculos de sol', d: 'Ray-Ban e outras marcas, com lentes degradê e G-15.' },
+  { t: 'Lentes multifocais', d: 'Varilux e Zeiss para enxergar de longe a perto com a mesma lente.' },
+  { t: 'Lentes de contato', d: 'Linha Acuvue: diárias, quinzenais, mensais e para astigmatismo.' },
+];
+---
+<Base
+  title="Coleção | BHZ Óptica"
+  description="Óculos de sol e de grau, lentes multifocais e lentes de contato na BHZ Óptica, no Street Shopping Planalto."
+  current="colecao"
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <h1 class="page-h1">Coleção</h1>
+      <div class="page-hero-row">
+        <p class="lede">Armações, óculos de sol e lentes para cada distância. Aqui vai um pouco do que tem na vitrine; na loja tem bem mais.</p>
+        <nav class="chip-nav" aria-label="Nesta página">
+          <a href="#oculos">Óculos de sol</a>
+          <a href="#lentes">Lentes</a>
+          <a href="#contato">Lentes de contato</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight colecao" id="oculos" aria-labelledby="sol-h">
+    <div class="wrap">
+      <h2 class="sr-only" id="sol-h">Óculos de sol</h2>
+      <div class="col-grid">
+        {COLECAO.map((c, i) => (
+          <figure class={`col-item c-${i}`}>
+            <div class="col-img" data-reveal><Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" /></div>
+            <figcaption><b>{c.brand}</b><span>{c.desc}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="todo">Mandar mais fotos de armações para a coleção</p>
+    </div>
+  </section>
+
+  <LensScene />
+
+  <section class="section servicos" aria-labelledby="srv-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 class="display" id="srv-h">O que a gente faz</h2>
+        <div class="sec-head-side"><p class="lede">Do primeiro óculos à troca de lente, com orientação para escolher a armação e a lente certas para a sua receita.</p></div>
+      </header>
+      <ul class="index-list">
+        {servicos.map((s) => (
+          <li class="index-row"><h3 class="index-t">{s.t}</h3><p class="index-d">{s.d}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight contato-sec" id="contato" aria-labelledby="ct-h">
+    <div class="wrap ct-grid">
+      <div class="ct-img" data-reveal><Img name="contato" alt="Caixas de lentes de contato Acuvue" sizes="(min-width: 900px) 45vw, 100vw" /></div>
+      <div class="ct-copy">
+        <h2 class="display" id="ct-h">Lentes de contato</h2>
+        <p class="lede">Diárias, quinzenais, mensais e para astigmatismo, da linha Acuvue. Traga sua receita e a gente confere o modelo certo.</p>
+        <a class="btn btn-ink" href={wa('Olá! Queria saber preço e disponibilidade de lentes de contato.')} target="_blank" rel="noopener">Consultar disponibilidade<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="promo" aria-labelledby="promo-h">
+    <div class="wrap promo-inner">
+      <h2 class="promo-h" id="promo-h">Compre 1,<br />ganhe outro!</h2>
+      <div class="promo-side">
+        <p>Na compra de armação com lente, a segunda armação é por nossa conta.</p>
+        <p class="promo-note">Condições na loja.</p>
+        <p class="todo">Confirmar se a promoção ainda vale e as condições</p>
+      </div>
+    </div>
+    <PixelGlasses cols={72} class="promo-mark" />
+  </section>
+</Base>

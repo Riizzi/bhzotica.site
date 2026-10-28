@@ -1,0 +1,53 @@
+---
+import WaIcon from './WaIcon.astro';
+import { wa } from '../data';
+---
+<form class="orc" data-orc>
+  <fieldset>
+    <legend>O que você procura?</legend>
+    <div class="opts">
+      {['Óculos de grau', 'Óculos de sol', 'Lentes multifocais', 'Lentes de contato'].map((o) => (
+        <label class="opt"><input type="checkbox" name="item" value={o} /><span>{o}</span></label>
+      ))}
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Você já tem receita?</legend>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="receita" value="sim" /><span>Tenho receita</span></label>
+      <label class="opt"><input type="radio" name="receita" value="nao" /><span>Ainda não</span></label>
+    </div>
+  </fieldset>
+  <label class="field">
+    <span>Seu nome <small>(opcional)</small></span>
+    <input type="text" name="nome" autocomplete="given-name" />
+  </label>
+  <div class="bubble" aria-live="polite">
+    <span class="bubble-to">Mensagem para a BHZ Óptica</span>
+    <p data-preview>Olá! Vim pelo site e gostaria de fazer um orçamento.</p>
+  </div>
+  <a class="btn btn-red btn-block" data-send href={wa()} target="_blank" rel="noopener"><WaIcon />Enviar pelo WhatsApp</a>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-orc]');
+  if (form) {
+    const preview = form.querySelector('[data-preview]')!;
+    const send = form.querySelector<HTMLAnchorElement>('[data-send]')!;
+    const list = (a: string[]) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a.at(-1));
+    const build = () => {
+      const fd = new FormData(form);
+      const items = (fd.getAll('item') as string[]).map((s) => s.toLowerCase());
+      const rec = fd.get('receita');
+      const nome = String(fd.get('nome') || '').trim();
+      let msg = `Olá!${nome ? ` Sou ${nome}.` : ''} Vim pelo site e gostaria de fazer um orçamento`;
+      msg += items.length ? ` de ${list(items)}.` : '.';
+      if (rec === 'sim') msg += ' Já tenho receita.';
+      if (rec === 'nao') msg += ' Ainda não tenho receita.';
+      preview.textContent = msg;
+      send.href = `https://wa.me/553133245968?text=${encodeURIComponent(msg)}`;
+    };
+    form.addEventListener('input', build);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
+</script>

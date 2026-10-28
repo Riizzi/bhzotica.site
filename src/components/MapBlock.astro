@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import { ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
+interface Props { id?: string; title?: string }
+const { id, title = 'Onde estamos' } = Astro.props;
+---
+<section class="map-sec" id={id} aria-labelledby={`${id ?? 'map'}-h`}>
+  <div class="wrap map-grid">
+    <div class="map-info">
+      <h2 class="display" id={`${id ?? 'map'}-h`}>{title}</h2>
+      <p class="map-addr"><b>{ADDRESS_L1}</b><br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
+      <dl class="info">
+        <div><dt>Horário</dt><dd><span class="todo-inline">Confirmar horário</span></dd></div>
+        <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no shopping</dd></div>
+        <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação</dd></div>
+      </dl>
+      <div class="pill-row">
+        <a class="pill" href={MAPS_URL} target="_blank" rel="noopener"><Icon name="pin" />Google Maps</a>
+        <a class="pill" href={WAZE_URL} target="_blank" rel="noopener"><Icon name="arrow" />Waze</a>
+      </div>
+    </div>
+    <div class="map-frame">
+      <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>

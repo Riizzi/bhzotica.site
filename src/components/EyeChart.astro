@@ -39,7 +39,7 @@ const rows = [
     const measure = () => {
       const r = chart.getBoundingClientRect();
       W = r.width; Hh = r.height;
-      R = W < 640 ? Math.max(58, W * 0.17) : Math.min(124, W * 0.095);
+      R = W < 640 ? Math.max(70, W * 0.205) : Math.min(156, W * 0.118);
       chart.style.setProperty('--R', R + 'px');
       if (!x) { x = W * 0.5; y = Hh * 0.28; }
     };

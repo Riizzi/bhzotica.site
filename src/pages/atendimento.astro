@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Img from '../components/Img.astro';
-import { ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
+import Icon from '../components/Icon.astro';
+import WaIcon from '../components/WaIcon.astro';
+import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, MAPS_URL } from '../data';
 
 const welcome = [
   { t: 'Acolhimento', d: 'Empresa que acolhe a comunidade LGBTQ+ e espaço seguro para pessoas transgênero.', pride: true },
@@ -12,17 +14,30 @@ const welcome = [
 ];
 ---
 <Base
-  title="O espaço | BHZ Óptica, Street Shopping Planalto"
-  description="Conheça a loja da BHZ Óptica no Street Shopping Planalto, em Belo Horizonte: acessível, acolhedora e com estacionamento gratuito."
-  current="espaco"
+  title="Atendimento | BHZ Óptica, Street Shopping Planalto"
+  description="Fale com a BHZ Óptica e conheça a loja no Street Shopping Planalto, em Belo Horizonte: acessível, acolhedora e com estacionamento gratuito."
+  current="atendimento"
 >
   <section class="page-hero">
     <div class="wrap">
-      <h1 class="page-h1">O espaço</h1>
+      <h1 class="page-h1">Atendimento</h1>
       <div class="page-hero-row">
-        <p class="lede">Uma loja clara, de vitrine aberta para o corredor do shopping, com balcões de vidro, espelho em cada lugar e cadeiras para escolher sentado.</p>
-        <p class="page-hero-meta">{ADDRESS_L1}<br />Planalto, Belo Horizonte</p>
+        <p class="lede">Liga, chama no WhatsApp ou passa na loja. Do jeito que for mais fácil pra você.</p>
       </div>
+      <ul class="contact-cards">
+        <li><a href="tel:+553133245968"><span class="cc-ic"><Icon name="phone" /></span><b>Ligar</b><span>{PHONE_DISPLAY}</span></a></li>
+        <li><a href={wa()} target="_blank" rel="noopener"><span class="cc-ic cc-wa"><WaIcon /></span><b>WhatsApp</b><span>Resposta pela loja</span></a></li>
+        <li><a href={MAPS_URL} target="_blank" rel="noopener"><span class="cc-ic"><Icon name="pin" /></span><b>Como chegar</b><span>{ADDRESS_L1}</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="esp-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 class="display" id="esp-h">O espaço</h2>
+        <div class="sec-head-side"><p class="lede">Uma loja clara, de vitrine aberta para o corredor do shopping, com balcões de vidro, espelho em cada lugar e cadeiras para escolher sentado.</p></div>
+      </header>
     </div>
   </section>
 
@@ -88,12 +103,4 @@ const welcome = [
     </div>
   </section>
 
-  <section class="map-strip" aria-label="Como chegar">
-    <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <div class="map-card">
-      <h2 class="map-h">Como chegar</h2>
-      <p>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
-      <p class="map-links"><a href={MAPS_URL} target="_blank" rel="noopener">Google Maps</a><a href={WAZE_URL} target="_blank" rel="noopener">Waze</a></p>
-    </div>
-  </section>
 </Base>

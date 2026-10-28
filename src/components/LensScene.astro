@@ -35,24 +35,33 @@ import Img from './Img.astro';
 </section>
 
 <script>
+  // Progresso da rolagem suavizado (interpolação a cada quadro) para o movimento ficar fluido.
   const scene = document.querySelector<HTMLElement>('[data-scene]');
   const sticky = document.querySelector<HTMLElement>('[data-scene-sticky]');
   if (scene && sticky) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v: number) => Math.min(1, Math.max(0, v));
-    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    let ticking = false;
-    const update = () => {
-      ticking = false;
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+    const target = () => {
       const r = scene.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = clamp(-r.top / Math.max(1, r.height - vh));
-      sticky.style.setProperty('--e', ease(clamp((p - 0.1) / 0.5)).toFixed(4));
-      sticky.style.setProperty('--f', clamp((p - 0.06) / 0.3).toFixed(4));
-      sticky.style.setProperty('--c', ease(clamp((p - 0.66) / 0.18)).toFixed(4));
+      return clamp(-r.top / Math.max(1, r.height - window.innerHeight));
     };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    let p = target(), raf = 0;
+    const paint = () => {
+      sticky.style.setProperty('--f', clamp(p / 0.32).toFixed(4));
+      sticky.style.setProperty('--e', ease(clamp(p / 0.62)).toFixed(4));
+      sticky.style.setProperty('--c', ease(clamp((p - 0.58) / 0.3)).toFixed(4));
+    };
+    const loop = () => {
+      const t = target();
+      p += (t - p) * (reduce ? 1 : 0.16);
+      if (Math.abs(t - p) < 0.0005) p = t;
+      paint();
+      raf = p === t ? 0 : requestAnimationFrame(loop);
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
+    paint();
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
   }
 </script>

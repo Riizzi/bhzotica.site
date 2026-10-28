@@ -7,16 +7,11 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import PixelGlasses from '../components/PixelGlasses.astro';
 import WaIcon from '../components/WaIcon.astro';
-import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL } from '../data';
+import Icon from '../components/Icon.astro';
+import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, PAGES, type PageKey } from '../data';
 
-interface Props { title: string; description: string; current?: 'home' | 'espaco' | 'guia' }
-const { title, description, current = 'home' } = Astro.props;
-const nav = [
-  { href: '/#colecao', label: 'Coleção' },
-  { href: '/#lentes', label: 'Lentes' },
-  { href: '/guia', label: 'Guia', key: 'guia' },
-  { href: '/espaco', label: 'O espaço', key: 'espaco' },
-];
+interface Props { title: string; description: string; current?: PageKey }
+const { title, description, current = 'inicio' } = Astro.props;
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -25,7 +20,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#F5F3EF" />
+    <meta name="theme-color" content="#FFFBF6" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/img/og.jpg" />
@@ -43,35 +38,40 @@ const nav = [
 
     <header class="site-header" data-header>
       <div class="header-row">
-        <nav class="nav-main" aria-label="Principal">
-          {nav.map((n) => <a href={n.href} aria-current={n.key === current ? 'page' : undefined}>{n.label}</a>)}
-        </nav>
         <Logo class="header-logo" />
-        <div class="nav-side">
-          <a href="tel:+553133245968" class="nav-phone">{PHONE_DISPLAY}</a>
-          <a href="/#atendimento" class="nav-cta">Atendimento</a>
-        </div>
-        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn>
-          <span class="menu-btn-label">Menu</span><span class="menu-btn-icon" aria-hidden="true"></span>
+        <nav class="nav-main" aria-label="Páginas">
+          {PAGES.map((p) => (
+            <a href={p.href} aria-current={p.key === current ? 'page' : undefined}><Icon name={p.icon} />{p.label}</a>
+          ))}
+        </nav>
+        <a href="tel:+553133245968" class="nav-phone"><Icon name="phone" />{PHONE_DISPLAY}</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-menu-btn>
+          <span class="menu-btn-icon" aria-hidden="true"><i></i><i></i></span>
         </button>
       </div>
-    </header>
 
-    <div class="menu" id="menu" data-menu hidden>
-      <nav aria-label="Menu">
-        <a href="/">Início</a>
-        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
-        <a href="/#atendimento">Atendimento</a>
-      </nav>
-      <p class="menu-foot">{ADDRESS_L1}<br />{ADDRESS_L2}<br /><a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
-    </div>
+      <div class="menu" id="menu" data-menu hidden>
+        <nav class="menu-grid" aria-label="Páginas">
+          {PAGES.map((p, i) => (
+            <a href={p.href} aria-current={p.key === current ? 'page' : undefined} style={`--i:${i}`}>
+              <span class="menu-ic"><Icon name={p.icon} /></span>{p.label}
+            </a>
+          ))}
+        </nav>
+        <div class="menu-actions">
+          <a href="tel:+553133245968" style="--i:4"><Icon name="phone" />Ligar</a>
+          <a href={wa()} target="_blank" rel="noopener" style="--i:5"><WaIcon />WhatsApp</a>
+        </div>
+      </div>
+    </header>
+    <div class="menu-scrim" data-menu-scrim hidden></div>
 
     <main id="conteudo"><slot /></main>
 
     <footer class="site-footer">
       <div class="wrap">
         <div class="footer-top">
-          <p class="footer-say">Passe na loja para provar.</p>
+          <p class="footer-say">Passa aqui para provar!</p>
           <div class="footer-cols">
             <div>
               <h2 class="footer-h">Loja</h2>
@@ -81,10 +81,6 @@ const nav = [
             <div>
               <h2 class="footer-h">Contato</h2>
               <p><a href="tel:+553133245968">{PHONE_DISPLAY}</a><br /><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></p>
-            </div>
-            <div>
-              <h2 class="footer-h">Navegue</h2>
-              <p><a href="/">Início</a><br /><a href="/#colecao">Coleção</a><br /><a href="/#lentes">Lentes</a><br /><a href="/guia">Guia</a><br /><a href="/espaco">O espaço</a></p>
             </div>
           </div>
         </div>
@@ -109,27 +105,35 @@ const nav = [
       const onScroll = () => {
         const y = window.scrollY;
         header.classList.toggle('is-scrolled', y > 24);
-        wa.classList.toggle('is-visible', y > window.innerHeight * 0.6);
+        wa.classList.toggle('is-visible', y > window.innerHeight * 0.5);
       };
       onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
       const btn = document.querySelector<HTMLButtonElement>('[data-menu-btn]')!;
       const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+      const scrim = document.querySelector<HTMLElement>('[data-menu-scrim]')!;
+      let timer = 0;
       const setMenu = (open: boolean) => {
+        clearTimeout(timer);
         btn.setAttribute('aria-expanded', String(open));
-        btn.querySelector('.menu-btn-label')!.textContent = open ? 'Fechar' : 'Menu';
+        btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
         document.documentElement.classList.toggle('menu-open', open);
-        if (open) { menu.hidden = false; requestAnimationFrame(() => menu.classList.add('is-open')); }
-        else { menu.classList.remove('is-open'); setTimeout(() => { if (!menu.classList.contains('is-open')) menu.hidden = true; }, 350); }
+        if (open) {
+          menu.hidden = false; scrim.hidden = false;
+          requestAnimationFrame(() => requestAnimationFrame(() => { menu.classList.add('is-open'); scrim.classList.add('is-open'); }));
+        } else {
+          menu.classList.remove('is-open'); scrim.classList.remove('is-open');
+          timer = window.setTimeout(() => { menu.hidden = true; scrim.hidden = true; }, 420);
+        }
       };
       btn.addEventListener('click', () => setMenu(btn.getAttribute('aria-expanded') !== 'true'));
+      scrim.addEventListener('click', () => setMenu(false));
       menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
-      // Revelação das imagens marcadas com [data-reveal] (uma vez, ao entrar na tela)
       const io = new IntersectionObserver((entries) => entries.forEach((en) => {
         if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
-      }), { rootMargin: '0px 0px -12% 0px' });
+      }), { rootMargin: '0px 0px -10% 0px' });
       document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
     </script>
   </body>

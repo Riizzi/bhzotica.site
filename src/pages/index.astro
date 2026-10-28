@@ -1,25 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import EyeChart from '../components/EyeChart.astro';
-import LensScene from '../components/LensScene.astro';
 import Img from '../components/Img.astro';
-import PixelGlasses from '../components/PixelGlasses.astro';
-import WaIcon from '../components/WaIcon.astro';
-import { PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
-
-const colecao = [
-  { img: 'sol-2', brand: 'Ray-Ban', desc: 'Aviador metálico, lente G-15', cls: 'c-a', alt: 'Óculos aviador Ray-Ban preto com lente G-15 sobre estojo de couro' },
-  { img: 'sol-1', brand: 'Ray-Ban', desc: 'Quadrado em acetato fosco, lente degradê', cls: 'c-b', alt: 'Óculos de sol Ray-Ban quadrado preto fosco com lente degradê' },
-  { img: 'sol-4', brand: 'Ray-Ban', desc: 'Formato clássico, lente degradê', cls: 'c-c', alt: 'Óculos de sol Ray-Ban preto com lente degradê e hastes metálicas' },
-  { img: 'sol-3', brand: 'Ray-Ban', desc: 'Retangular com hastes em azul', cls: 'c-d', alt: 'Óculos de sol Ray-Ban preto com hastes azuis' },
-];
-
-const servicos = [
-  { t: 'Óculos de grau', d: 'Armação e lentes escolhidas para a sua receita e o seu rosto.', img: 'interior' },
-  { t: 'Óculos de sol', d: 'Ray-Ban e outras marcas, com lentes degradê e G-15.', img: 'sol-4' },
-  { t: 'Lentes multifocais', d: 'Varilux e Zeiss para enxergar de longe a perto com a mesma lente.', img: 'lentes' },
-  { t: 'Lentes de contato', d: 'Linha Acuvue: diárias, quinzenais, mensais e para astigmatismo.', img: 'contato' },
-];
+import Icon from '../components/Icon.astro';
+import Orcamento from '../components/Orcamento.astro';
+import MapBlock from '../components/MapBlock.astro';
+import { PHONE_DISPLAY, MAPS_URL, COLECAO } from '../data';
 
 const faqs = [
   'Quanto tempo leva para os óculos ficarem prontos?',
@@ -40,130 +26,73 @@ const reviews = [
   title="BHZ Óptica | Óculos de grau, de sol e lentes no Planalto, BH"
   description="Óptica no Street Shopping Planalto, em Belo Horizonte: óculos de grau e de sol, lentes multifocais e lentes de contato."
 >
-  <!-- HERO -->
+  <!-- INÍCIO -->
   <section class="hero">
     <EyeChart />
     <div class="wrap hero-foot">
-      <p class="hero-lede">Óculos de grau e de sol, lentes multifocais e de contato no Street Shopping Planalto, em Belo Horizonte.</p>
-      <div class="hero-links">
-        <a class="btn" href="#colecao">Ver a coleção</a>
-        <a class="link-arrow" href="/espaco">Conhecer a loja</a>
-      </div>
+      <p class="hero-lede">Óculos de grau e de sol, lentes multifocais e de contato no Street Shopping Planalto. Vem provar com calma, a gente ajuda a escolher.</p>
+      <nav class="quick" aria-label="Atalhos">
+        <a href="/colecao" class="quick-a"><Icon name="glasses" /><span>Coleção</span></a>
+        <a href="/guia" class="quick-a"><Icon name="book" /><span>Guia</span></a>
+        <a href="/atendimento" class="quick-a"><Icon name="store" /><span>Atendimento</span></a>
+        <a href="#onde" class="quick-a"><Icon name="pin" /><span>Como chegar</span></a>
+      </nav>
     </div>
   </section>
 
-  <!-- CENA DAS LENTES -->
-  <LensScene />
-
-  <!-- COLEÇÃO -->
-  <section class="section colecao" id="colecao" aria-labelledby="col-h">
+  <!-- COLEÇÃO (resumo) -->
+  <section class="section col-sum" aria-labelledby="col-h">
     <div class="wrap">
       <header class="sec-head">
         <h2 class="display" id="col-h">A coleção</h2>
         <div class="sec-head-side">
-          <p class="lede">Armações para provar com calma, diante do espelho, com alguém que entende de lente ao seu lado.</p>
-          <p class="brands">Ray-Ban<span aria-hidden="true">/</span>Varilux<span aria-hidden="true">/</span>Zeiss<span aria-hidden="true">/</span>Acuvue<span aria-hidden="true">/</span>Atitude</p>
+          <p class="lede">Ray-Ban, Varilux, Zeiss, Acuvue e mais. Armações para provar diante do espelho, sem pressa.</p>
+          <a class="btn btn-ink" href="/colecao">Ver coleção completa<Icon name="arrow" /></a>
         </div>
       </header>
-
-      <div class="col-grid">
-        {colecao.map((c) => (
-          <figure class={`col-item ${c.cls}`}>
-            <div class="col-img" data-reveal>
-              <Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" />
-            </div>
-            <figcaption><b>{c.brand}</b><span>{c.desc}</span></figcaption>
-          </figure>
+      <div class="col-row">
+        {COLECAO.slice(0, 3).map((c, i) => (
+          <a href="/colecao" class={`col-card col-card-${i}`}>
+            <div class="col-img" data-reveal><Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 33vw, 80vw" /></div>
+            <span class="col-cap"><b>{c.brand}</b>{c.desc}</span>
+          </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- SERVIÇOS -->
-  <section class="section servicos" aria-labelledby="srv-h">
-    <div class="wrap">
-      <header class="sec-head">
-        <h2 class="display" id="srv-h">O que fazemos</h2>
-        <div class="sec-head-side"><p class="lede">Do primeiro óculos à troca de lente, com orientação para escolher a armação e a lente certas para a sua receita.</p></div>
-      </header>
-      <ul class="index-list" data-index>
-        {servicos.map((s) => (
-          <li class="index-row" data-img={`/img/${s.img}-800.webp`}>
-            <h3 class="index-t">{s.t}</h3>
-            <p class="index-d">{s.d}</p>
-          </li>
-        ))}
-      </ul>
-      <div class="index-float" aria-hidden="true" data-index-float><img alt="" /></div>
-    </div>
-  </section>
-
-  <!-- PROMO -->
-  <section class="promo" aria-labelledby="promo-h">
-    <div class="wrap promo-inner">
-      <h2 class="promo-h" id="promo-h">Compre 1,<br />ganhe outro.</h2>
-      <div class="promo-side">
-        <p>Na compra de armação com lente, a segunda armação é por nossa conta.</p>
-        <p class="promo-note">Condições na loja.</p>
-        <p class="todo">Confirmar se a promoção ainda vale e as condições</p>
-      </div>
-    </div>
-    <PixelGlasses cols={72} class="promo-mark" />
-  </section>
-
-  <!-- ESPAÇO -->
-  <section class="section espaco-feat" aria-labelledby="esp-h">
-    <div class="wrap espaco-grid">
-      <div class="esp-video" data-reveal>
-        <video src="/video/espaco.mp4" poster="/img/v1-800.webp" autoplay muted loop playsinline aria-label="Vídeo da fachada e do interior da loja"></video>
-      </div>
-      <div class="esp-photo" data-reveal>
-        <Img name="v75" alt="Balcão de vidro com armações dentro da loja" sizes="(min-width: 900px) 28vw, 60vw" />
-      </div>
-      <div class="esp-copy">
-        <h2 class="display" id="esp-h">Venha provar</h2>
-        <p class="lede">Balcões de vidro com as armações à mostra, espelho em cada lugar e cadeiras para escolher sem pressa. Estacionamento gratuito no próprio shopping.</p>
-        <a class="link-arrow" href="/espaco">Conhecer o espaço</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- GUIA (chamada) -->
-  <section class="section guia-teaser" aria-labelledby="gt-h">
-    <div class="wrap">
-      <header class="sec-head">
-        <h2 class="display" id="gt-h">Guia</h2>
-        <div class="sec-head-side"><p class="lede">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p></div>
-      </header>
-      <ul class="gt-list">
-        <li><a href="/guia#receita"><b>Como ler sua receita</b><span>Lorem ipsum dolor sit amet.</span></a></li>
-        <li><a href="/guia#multifocal"><b>Seu primeiro multifocal</b><span>Lorem ipsum dolor sit amet.</span></a></li>
-        <li><a href="/guia#cuidados"><b>Cuidados com os óculos</b><span>Lorem ipsum dolor sit amet.</span></a></li>
-        <li><a href="/guia#infantil"><b>Primeiros óculos da criança</b><span>Lorem ipsum dolor sit amet.</span></a></li>
-      </ul>
-      <p class="todo">Escrever uma frase de chamada para o guia</p>
-    </div>
-  </section>
-
-  <!-- AVALIAÇÕES -->
+  <!-- FEEDBACKS -->
   <section class="section reviews" aria-labelledby="rev-h">
     <div class="wrap">
-      <h2 class="sr-only" id="rev-h">Avaliações no Google</h2>
-      <div class="rev-stage" data-reviews>
+      <header class="rev-head">
+        <h2 class="display" id="rev-h">Quem já passou por aqui</h2>
+        <p class="rev-score"><span class="stars" aria-hidden="true">★★★★★</span>no Google</p>
+      </header>
+      <div class="rev-grid">
         {reviews.map((r, i) => (
-          <figure class="rev" id={`rev-${i}`} hidden={i !== 0}>
+          <figure class={`rev rev-${i}`}>
             <blockquote><p>{r.text}</p></blockquote>
+            <figcaption><b>{r.name}</b><span>{r.when}</span></figcaption>
           </figure>
         ))}
       </div>
-      <div class="rev-tabs" role="tablist" aria-label="Escolher avaliação">
-        {reviews.map((r, i) => (
-          <button role="tab" type="button" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`rev-${i}`} data-rev={i}>
-            <b>{r.name}</b><span>no Google, {r.when}</span>
-          </button>
-        ))}
+      <p class="rev-more"><a class="pill pill-light" href={MAPS_URL} target="_blank" rel="noopener">Ver todas as avaliações no Google<Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <!-- ENDEREÇO -->
+  <MapBlock id="onde" title="Onde estamos" />
+
+  <!-- ATENDIMENTO -->
+  <section class="section at-sec" id="orcamento" aria-labelledby="at-h">
+    <div class="wrap at-grid">
+      <div class="at-intro">
+        <h2 class="display" id="at-h">Atendimento</h2>
+        <p class="lede">Conta pra gente o que você procura. A mensagem fica pronta e você só envia no WhatsApp.</p>
+        <p class="at-phone">Prefere ligar? <a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
+        <a class="link-arrow" href="/atendimento">Conhecer a loja e a equipe</a>
       </div>
-      <p class="rev-more"><span class="stars" aria-hidden="true">★★★★★</span><a href={MAPS_URL} target="_blank" rel="noopener">Ver todas as avaliações no Google</a></p>
+      <Orcamento />
     </div>
   </section>
 
@@ -184,105 +113,4 @@ const reviews = [
       </div>
     </div>
   </section>
-
-  <!-- ATENDIMENTO -->
-  <section class="section atendimento" id="atendimento" aria-labelledby="at-h">
-    <div class="wrap at-grid">
-      <div class="at-info">
-        <h2 class="display" id="at-h">Atendimento</h2>
-        <p class="lede">Conte o que você procura e continue a conversa com a loja pelo WhatsApp.</p>
-        <dl class="info">
-          <div><dt>Endereço</dt><dd>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</dd></div>
-          <div><dt>Telefone</dt><dd><a href="tel:+553133245968">{PHONE_DISPLAY}</a></dd></div>
-          <div><dt>Horário</dt><dd><span class="todo-inline">Confirmar horário</span></dd></div>
-          <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no shopping</dd></div>
-          <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação</dd></div>
-        </dl>
-      </div>
-
-      <form class="at-form" data-orc>
-        <fieldset>
-          <legend>O que você procura?</legend>
-          <div class="opts">
-            {['Óculos de grau', 'Óculos de sol', 'Lentes multifocais', 'Lentes de contato'].map((o) => (
-              <label class="opt"><input type="checkbox" name="item" value={o} /><span>{o}</span></label>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Você já tem receita?</legend>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="receita" value="sim" /><span>Tenho receita</span></label>
-            <label class="opt"><input type="radio" name="receita" value="nao" /><span>Ainda não</span></label>
-          </div>
-        </fieldset>
-        <label class="field">
-          <span>Seu nome <small>(opcional)</small></span>
-          <input type="text" name="nome" autocomplete="given-name" />
-        </label>
-        <div class="msg" aria-live="polite">
-          <span class="msg-label">Sua mensagem</span>
-          <p data-preview>Olá! Vim pelo site e gostaria de fazer um orçamento.</p>
-        </div>
-        <a class="btn btn-solid btn-block" data-send href="https://wa.me/553133245968?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noopener"><WaIcon />Enviar pelo WhatsApp</a>
-      </form>
-    </div>
-  </section>
-
-  <!-- MAPA -->
-  <section class="map-strip" id="visite" aria-label="Mapa">
-    <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <div class="map-card">
-      <p><b>{ADDRESS_L1}</b><br />{ADDRESS_L2}</p>
-      <p class="map-links"><a href={MAPS_URL} target="_blank" rel="noopener">Google Maps</a><a href={WAZE_URL} target="_blank" rel="noopener">Waze</a></p>
-    </div>
-  </section>
 </Base>
-
-<script>
-  // Mensagem do orçamento
-  const form = document.querySelector<HTMLFormElement>('[data-orc]');
-  if (form) {
-    const preview = form.querySelector('[data-preview]')!;
-    const send = form.querySelector<HTMLAnchorElement>('[data-send]')!;
-    const list = (a: string[]) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a.at(-1));
-    const build = () => {
-      const fd = new FormData(form);
-      const items = (fd.getAll('item') as string[]).map((s) => s.toLowerCase());
-      const rec = fd.get('receita');
-      const nome = String(fd.get('nome') || '').trim();
-      let msg = `Olá!${nome ? ` Sou ${nome}.` : ''} Vim pelo site e gostaria de fazer um orçamento`;
-      msg += items.length ? ` de ${list(items)}.` : '.';
-      if (rec === 'sim') msg += ' Já tenho receita.';
-      if (rec === 'nao') msg += ' Ainda não tenho receita.';
-      preview.textContent = msg;
-      send.href = `https://wa.me/553133245968?text=${encodeURIComponent(msg)}`;
-    };
-    form.addEventListener('input', build);
-    form.addEventListener('submit', (e) => e.preventDefault());
-  }
-
-  // Avaliações
-  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-rev]');
-  tabs.forEach((t) => t.addEventListener('click', () => {
-    tabs.forEach((o) => {
-      const on = o === t;
-      o.setAttribute('aria-selected', String(on));
-      document.getElementById(o.getAttribute('aria-controls')!)!.hidden = !on;
-    });
-  }));
-
-  // Lista de serviços: imagem que acompanha o cursor (só com mouse)
-  const list = document.querySelector<HTMLElement>('[data-index]');
-  const float = document.querySelector<HTMLElement>('[data-index-float]');
-  if (list && float && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const img = float.querySelector('img')!;
-    let x = 0, y = 0, tx = 0, ty = 0, raf = 0;
-    const loop = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; float.style.transform = `translate(${x}px, ${y}px)`; raf = requestAnimationFrame(loop); };
-    list.querySelectorAll<HTMLElement>('.index-row').forEach((row) => {
-      row.addEventListener('mouseenter', () => { img.src = row.dataset.img!; float.classList.add('is-on'); });
-    });
-    list.addEventListener('mousemove', (e) => { tx = e.clientX + 24; ty = e.clientY - 120; if (!raf) { x = tx; y = ty; raf = requestAnimationFrame(loop); } });
-    list.addEventListener('mouseleave', () => { float.classList.remove('is-on'); cancelAnimationFrame(raf); raf = 0; });
-  }
-</script>
