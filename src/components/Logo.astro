@@ -1,0 +1,9 @@
+---
+import PixelGlasses from './PixelGlasses.astro';
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<a href="/" class={`logo ${cls}`} aria-label="BHZ Óptica, página inicial">
+  <PixelGlasses cols={17} scatter={false} class="logo-mark" />
+  <span class="logo-word"><b>BHZ</b><span>Óptica</span></span>
+</a>

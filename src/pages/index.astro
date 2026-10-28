@@ -1,0 +1,229 @@
+---
+import Base from '../layouts/Base.astro';
+import EyeChart from '../components/EyeChart.astro';
+import Band from '../components/Band.astro';
+import PixelGlasses from '../components/PixelGlasses.astro';
+import WaIcon from '../components/WaIcon.astro';
+import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
+
+const sol = [
+  { src: '/img/sol-1', alt: 'Óculos de sol Ray-Ban preto fosco com lente degradê' },
+  { src: '/img/sol-2-aviador', alt: 'Óculos aviador Ray-Ban com lente G-15 sobre o estojo de couro' },
+  { src: '/img/sol-3', alt: 'Óculos de sol Ray-Ban preto com hastes azuis' },
+  { src: '/img/sol-4', alt: 'Óculos de sol Ray-Ban quadrado preto com lente degradê' },
+];
+
+const reviews = [
+  { name: 'Dj Sid Pacheco', when: 'há 6 meses', text: 'Excelente atendimento e ótimos preços! Fui muito bem atendido pelo Warllen! Super indico!' },
+  { name: 'Ana Paula Oliveira', when: 'há 2 meses', text: 'Excelente atendimento e lindos modelos de óculos de sol e de grau.' },
+  { name: 'Alessandra Meira', when: 'há 4 meses', text: 'Excelente atendimento. Óculos de qualidade. Fiquei muito satisfeita!' },
+];
+---
+<Base
+  title="BHZ Óptica | Óculos de grau, de sol e lentes no Planalto, BH"
+  description="Óptica no Street Shopping Planalto, em Belo Horizonte: óculos de grau e de sol, lentes multifocais e lentes de contato. Faça seu orçamento pelo WhatsApp."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <EyeChart />
+    <div class="wrap hero-foot">
+      <p class="hero-lede">Armações, lentes de grau, óculos de sol e lentes de contato no Street Shopping Planalto. Traga sua receita e escolha com calma.</p>
+      <div class="hero-actions">
+        <a class="btn btn-red" href={wa()} target="_blank" rel="noopener"><WaIcon />Fazer orçamento no WhatsApp</a>
+        <a class="btn btn-ghost" href="/espaco">Conhecer o espaço</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAIXA: LENTES -->
+  <Band bg="/img/lentes-bifocal-multifocal.webp" id="lentes">
+    <picture slot="media">
+      <source srcset="/img/lentes-bifocal-multifocal.webp" type="image/webp" />
+      <img src="/img/lentes-bifocal-multifocal.jpg" width="540" height="436" alt="Comparação Varilux: a lente bifocal tem duas zonas, longe e perto; a multifocal tem longe, médio e perto" loading="lazy" />
+    </picture>
+    <h2 class="h2">Uma lente para cada distância</h2>
+    <dl class="lens-compare">
+      <div>
+        <dt>Bifocal</dt>
+        <dd>Duas zonas na mesma lente: longe em cima, perto embaixo. A divisão entre elas aparece no vidro.</dd>
+      </div>
+      <div>
+        <dt>Multifocal</dt>
+        <dd>Longe, médio e perto em transição contínua, sem linha aparente. Indicada para quem começou a ter dificuldade de enxergar de perto.</dd>
+      </div>
+    </dl>
+    <a class="btn btn-red" href={wa('Olá! Vim pelo site e queria um orçamento de lentes multifocais.')} target="_blank" rel="noopener"><WaIcon />Orçamento de multifocal</a>
+  </Band>
+
+  <!-- VITRINE -->
+  <section class="section vitrine" aria-labelledby="vitrine-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="vitrine-h">Na vitrine</h2>
+        <p>Ray-Ban, Varilux, Zeiss, Acuvue e outras marcas. Experimente na loja, com espelho e cadeira para provar sem pressa.</p>
+      </div>
+
+      <div class="vitrine-grid">
+        <article class="v-sol">
+          <div class="v-head">
+            <h3 class="h3">Óculos de sol</h3>
+            <p>Modelos clássicos e esportivos, com lente degradê ou G-15.</p>
+          </div>
+          <ul class="sol-strip" aria-label="Óculos de sol da vitrine">
+            {sol.map((s) => (
+              <li>
+                <picture>
+                  <source srcset={`${s.src}.webp`} type="image/webp" />
+                  <img src={`${s.src}.jpg`} width="540" height="436" alt={s.alt} loading="lazy" />
+                </picture>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="v-grau">
+          <h3 class="h3">Óculos de grau</h3>
+          <p>Armação e lentes sob medida para a sua receita. Traga a receita do oftalmologista e a gente monta o orçamento com você.</p>
+          <a class="link" href={wa('Olá! Tenho uma receita e queria orçamento de óculos de grau.')} target="_blank" rel="noopener">Pedir orçamento com receita</a>
+        </article>
+
+        <article class="v-contato">
+          <picture>
+            <source srcset="/img/lentes-de-contato.webp" type="image/webp" />
+            <img src="/img/lentes-de-contato.jpg" width="540" height="436" alt="Caixas de lentes de contato Acuvue: Oasys, Moist, Vita, Define e TruEye" loading="lazy" />
+          </picture>
+          <div>
+            <h3 class="h3">Lentes de contato</h3>
+            <p>Linha Acuvue: diárias, quinzenais, mensais, para astigmatismo e multifocais.</p>
+            <a class="link" href={wa('Olá! Queria saber preço e disponibilidade de lentes de contato.')} target="_blank" rel="noopener">Consultar disponibilidade</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO -->
+  <section class="promo" aria-labelledby="promo-h">
+    <div class="wrap promo-inner">
+      <div>
+        <h2 class="promo-h" id="promo-h">Compre 1, ganhe outro</h2>
+        <p>Na compra de armação com lente, a segunda armação é por nossa conta. Consulte as condições na loja.</p>
+      </div>
+      <a class="btn btn-white" href={wa('Olá! Vi a promoção "Compre 1, ganhe outro" no site. Como funciona?')} target="_blank" rel="noopener"><WaIcon />Perguntar sobre a promoção</a>
+    </div>
+    <PixelGlasses cols={56} class="promo-mark" />
+  </section>
+
+  <!-- ORÇAMENTO -->
+  <section class="section orcamento" id="orcamento" aria-labelledby="orc-h">
+    <div class="wrap orc-grid">
+      <div class="orc-intro">
+        <h2 class="h2" id="orc-h">Peça um orçamento</h2>
+        <p>Marque o que você procura. A mensagem fica pronta ao lado e é só enviar no WhatsApp da loja.</p>
+        <p class="orc-phone">Prefere ligar? <a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
+      </div>
+
+      <form class="orc-form" data-orc>
+        <fieldset>
+          <legend>O que você procura?</legend>
+          <div class="chips">
+            {['Óculos de grau', 'Óculos de sol', 'Lentes multifocais', 'Lentes de contato'].map((o) => (
+              <label class="chip"><input type="checkbox" name="item" value={o} /><span>{o}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Você já tem receita?</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="receita" value="sim" /><span>Tenho receita</span></label>
+            <label class="chip"><input type="radio" name="receita" value="nao" /><span>Ainda não</span></label>
+          </div>
+        </fieldset>
+        <label class="field">
+          <span>Seu nome <small>(opcional)</small></span>
+          <input type="text" name="nome" autocomplete="given-name" />
+        </label>
+
+        <div class="bubble" aria-live="polite">
+          <span class="bubble-to">Mensagem para BHZ Óptica</span>
+          <p data-preview>Olá! Vim pelo site e gostaria de fazer um orçamento.</p>
+        </div>
+        <a class="btn btn-red btn-block" data-send href={wa()} target="_blank" rel="noopener"><WaIcon />Enviar no WhatsApp</a>
+      </form>
+    </div>
+  </section>
+
+  <!-- ESPAÇO (teaser) -->
+  <Band bg="/img/video-poster.jpg" class="band-espaco" flip>
+    <video slot="media" src="/video/espaco.mp4" poster="/img/video-poster.jpg" autoplay muted loop playsinline width="368" height="496" aria-label="Vídeo mostrando a fachada e o interior da loja"></video>
+    <h2 class="h2">Venha provar</h2>
+    <p>Balcões de vidro com as armações à mostra, espelhos em cada lugar e cadeiras para escolher sentado. A loja fica dentro do Street Shopping Planalto, com estacionamento gratuito.</p>
+    <a class="btn btn-ghost" href="/espaco">Conhecer o espaço</a>
+  </Band>
+
+  <!-- AVALIAÇÕES -->
+  <section class="section reviews" aria-labelledby="rev-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="rev-h">Quem já passou por aqui</h2>
+        <p><a class="link" href={MAPS_URL} target="_blank" rel="noopener">Ver todas as avaliações no Google</a></p>
+      </div>
+      <div class="review-grid">
+        {reviews.map((r, i) => (
+          <figure class={`review review-${i + 1}`}>
+            <span class="stars" role="img" aria-label="5 de 5 estrelas">★★★★★</span>
+            <blockquote><p>{r.text}</p></blockquote>
+            <figcaption><b>{r.name}</b><span>no Google, {r.when}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- VISITE -->
+  <section class="section visite" id="visite" aria-labelledby="vis-h">
+    <div class="wrap visite-grid">
+      <div>
+        <h2 class="h2" id="vis-h">Como chegar</h2>
+        <dl class="info">
+          <div><dt>Endereço</dt><dd>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</dd></div>
+          <div><dt>Telefone e WhatsApp</dt><dd><a href="tel:+553133245968">{PHONE_DISPLAY}</a></dd></div>
+          <div><dt>Horário</dt><dd><span class="todo-inline">a confirmar com a loja</span></dd></div>
+          <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no próprio shopping</dd></div>
+          <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação (NFC)</dd></div>
+          <div><dt>Acessibilidade</dt><dd>Entrada, assento, banheiro e vaga para cadeira de rodas</dd></div>
+        </dl>
+        <div class="visite-actions">
+          <a class="btn btn-red" href={MAPS_URL} target="_blank" rel="noopener">Abrir no Google Maps</a>
+          <a class="btn btn-ghost" href={WAZE_URL} target="_blank" rel="noopener">Abrir no Waze</a>
+        </div>
+      </div>
+      <div class="map">
+        <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-orc]');
+  if (form) {
+    const preview = form.querySelector('[data-preview]')!;
+    const send = form.querySelector<HTMLAnchorElement>('[data-send]')!;
+    const list = (a: string[]) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a.at(-1);
+    const build = () => {
+      const fd = new FormData(form);
+      const items = (fd.getAll('item') as string[]).map((s) => s.toLowerCase());
+      const rec = fd.get('receita');
+      const nome = String(fd.get('nome') || '').trim();
+      let msg = `Olá!${nome ? ` Sou ${nome}.` : ''} Vim pelo site e gostaria de fazer um orçamento`;
+      msg += items.length ? ` de ${list(items)}.` : '.';
+      if (rec === 'sim') msg += ' Já tenho receita.';
+      if (rec === 'nao') msg += ' Ainda não tenho receita.';
+      preview.textContent = msg;
+      send.href = `https://wa.me/553133245968?text=${encodeURIComponent(msg)}`;
+    };
+    form.addEventListener('input', build);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
+</script>

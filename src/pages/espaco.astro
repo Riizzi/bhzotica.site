@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import Band from '../components/Band.astro';
+import PixelGlasses from '../components/PixelGlasses.astro';
+import WaIcon from '../components/WaIcon.astro';
+import { wa, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL } from '../data';
+
+const welcome = [
+  { t: 'Acolhimento', d: 'Empresa que acolhe a comunidade LGBTQ+ e espaço seguro para pessoas transgênero.', i: 'heart' },
+  { t: 'Cadeira de rodas', d: 'Entrada, assento, banheiro e estacionamento acessíveis.', i: 'access' },
+  { t: 'Banheiro', d: 'Banheiro disponível, incluindo banheiro de gênero neutro.', i: 'door' },
+  { t: 'Estacionamento', d: 'Gratuito na rua e no próprio Street Shopping Planalto.', i: 'car' },
+  { t: 'Pagamento', d: 'Cartão de crédito, débito e pagamento por aproximação.', i: 'card' },
+];
+const icons: Record<string, string> = {
+  heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z',
+  access: 'M12 4.5a1.5 1.5 0 1 0 0-.01M9 8h6M12 8v6h4l2 5M12 11a5 5 0 1 0 3.5 8.5',
+  door: 'M6 21V4h12v17M4 21h16M14 12h.01',
+  car: 'M4 16v-4l2-5h12l2 5v4M4 16h16M7 16v2M17 16v2M7.5 12.5h.01M16.5 12.5h.01',
+  card: 'M3 6h18v12H3zM3 10h18M7 15h3',
+};
+---
+<Base
+  title="O espaço | BHZ Óptica, Street Shopping Planalto"
+  description="Conheça a loja da BHZ Óptica no Street Shopping Planalto, em Belo Horizonte: acessível, acolhedora e com estacionamento gratuito."
+  current="espaco"
+>
+  <section class="page-hero">
+    <div class="wrap page-hero-grid">
+      <div>
+        <h1 class="page-h1">O espaço</h1>
+        <p class="hero-lede">Uma loja clara, de vitrine aberta para a rua do shopping, com balcões de vidro, espelho em cada lugar e cadeiras para escolher sentado.</p>
+      </div>
+      <PixelGlasses cols={60} class="page-hero-mark" />
+    </div>
+  </section>
+
+  <Band bg="/img/video-poster.jpg" class="band-espaco">
+    <video slot="media" src="/video/espaco.mp4" poster="/img/video-poster.jpg" autoplay muted loop playsinline controls width="368" height="496" aria-label="Vídeo mostrando a fachada e o interior da loja"></video>
+    <h2 class="h2">Por dentro da loja</h2>
+    <p>Da fachada vermelha ao balcão de provas: é assim que você nos encontra no Street Shopping Planalto.</p>
+    <a class="btn btn-red" href={wa('Olá! Vou passar na loja. Vocês estão abertos hoje?')} target="_blank" rel="noopener"><WaIcon />Avisar que vou passar</a>
+  </Band>
+
+  <section class="section" aria-labelledby="gal-h">
+    <div class="wrap">
+      <h2 class="h2" id="gal-h">Fotos</h2>
+      <div class="gallery">
+        <figure class="g-a">
+          <picture><source srcset="/img/fachada.webp" type="image/webp" /><img src="/img/fachada.jpg" width="540" height="889" alt="Fachada da BHZ Óptica com letreiro vermelho e vitrine de vidro" loading="lazy" /></picture>
+          <figcaption>A fachada, no corredor do shopping</figcaption>
+        </figure>
+        <figure class="g-b">
+          <picture><source srcset="/img/interior.webp" type="image/webp" /><img src="/img/interior.jpg" width="540" height="889" alt="Interior da loja com balcões de vidro, espelhos e cadeiras vermelhas" loading="lazy" /></picture>
+          <figcaption>Balcões de prova com espelho</figcaption>
+        </figure>
+        <figure class="g-c">
+          <img src="/img/video-10.jpg" width="368" height="496" alt="Prateleiras com óculos de sol expostos" loading="lazy" />
+          <figcaption>Prateleiras de óculos de sol</figcaption>
+        </figure>
+        <figure class="g-d">
+          <img src="/img/video-4.5.jpg" width="368" height="496" alt="Vista do interior da loja a partir da entrada" loading="lazy" />
+          <figcaption>Vista da entrada</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sobre" aria-labelledby="sobre-h">
+    <div class="wrap sobre-grid">
+      <h2 class="h2" id="sobre-h">Sobre a BHZ Óptica</h2>
+      <div class="prose">
+        <p>A BHZ Óptica atende no Planalto, em Belo Horizonte, com óculos de grau, óculos de sol, lentes multifocais e lentes de contato. Quem vem aqui costuma elogiar a mesma coisa: o atendimento.</p>
+        <p class="todo">Rascunho para completar com o proprietário: desde quando a loja está aberta, quem atende, o que a diferencia das outras ópticas do bairro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section welcome" aria-labelledby="wel-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2" id="wel-h">Para todo mundo</h2>
+        <p>O que você encontra antes mesmo de escolher a armação.</p>
+      </div>
+      <ul class="welcome-list">
+        {welcome.map((w) => (
+          <li class={w.i === 'heart' ? 'is-pride' : ''}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={icons[w.i]} /></svg>
+            <div><h3 class="h3">{w.t}</h3><p>{w.d}</p></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section chegar" aria-labelledby="che-h">
+    <div class="wrap chegar-inner">
+      <div>
+        <h2 class="h2" id="che-h">Como chegar</h2>
+        <p class="addr">{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
+      </div>
+      <div class="visite-actions">
+        <a class="btn btn-white" href={MAPS_URL} target="_blank" rel="noopener">Abrir no Google Maps</a>
+        <a class="btn btn-outline-white" href={WAZE_URL} target="_blank" rel="noopener">Abrir no Waze</a>
+      </div>
+    </div>
+  </section>
+</Base>

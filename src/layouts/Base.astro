@@ -1,0 +1,89 @@
+---
+import '@fontsource-variable/archivo/standard.css';
+import '@fontsource-variable/archivo/standard-italic.css';
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import PixelGlasses from '../components/PixelGlasses.astro';
+import WaIcon from '../components/WaIcon.astro';
+import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL } from '../data';
+
+interface Props { title: string; description: string; current?: 'home' | 'espaco' }
+const { title, description, current = 'home' } = Astro.props;
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#D0111B" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/img/fachada.jpg" />
+    <meta property="og:locale" content="pt_BR" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'Optician', name: 'BHZ Óptica',
+      telephone: '+55 31 3324-5968', image: '/img/fachada.jpg',
+      address: { '@type': 'PostalAddress', streetAddress: 'Av. Dr. Cristiano Guimarães, 1691 - Street Shopping Planalto', addressLocality: 'Belo Horizonte', addressRegion: 'MG', postalCode: '31730-300', addressCountry: 'BR' },
+      paymentAccepted: 'Cartão de crédito, cartão de débito, NFC'
+    })} />
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <div class="wrap header-row">
+        <Logo />
+        <nav aria-label="Principal">
+          <ul>
+            <li><a href="/" aria-current={current === 'home' ? 'page' : undefined}>Início</a></li>
+            <li><a href="/#lentes">Lentes</a></li>
+            <li><a href="/espaco" aria-current={current === 'espaco' ? 'page' : undefined}>O espaço</a></li>
+            <li><a href="/#visite">Como chegar</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn-red btn-sm header-cta" href="/#orcamento">Fazer orçamento</a>
+      </div>
+    </header>
+
+    <main id="conteudo"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <PixelGlasses cols={40} class="footer-mark" />
+          <p class="footer-word"><b>BHZ</b> Óptica</p>
+        </div>
+        <div>
+          <h2 class="footer-h">Endereço</h2>
+          <p>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
+          <p><a href={MAPS_URL} target="_blank" rel="noopener">Abrir no Google Maps</a></p>
+        </div>
+        <div>
+          <h2 class="footer-h">Contato</h2>
+          <p><a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
+          <p><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></p>
+        </div>
+        <div>
+          <h2 class="footer-h">Páginas</h2>
+          <p><a href="/">Início</a><br /><a href="/espaco">O espaço</a><br /><a href="/#orcamento">Orçamento</a></p>
+        </div>
+      </div>
+      <div class="wrap footer-base">
+        <p>© {new Date().getFullYear()} BHZ Óptica. Empresa que acolhe a comunidade LGBTQ+.</p>
+        <p class="footer-credit">Site por <a href="https://github.com/Riizzi" target="_blank" rel="noopener">João Pedro Rizzi</a></p>
+      </div>
+    </footer>
+
+    <a class="wa-float" href={wa()} target="_blank" rel="noopener" aria-label="Fazer orçamento pelo WhatsApp">
+      <WaIcon /><span>Orçamento</span>
+    </a>
+
+    <script>
+      const h = document.querySelector('.site-header');
+      const onScroll = () => h?.classList.toggle('is-scrolled', window.scrollY > 8);
+      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    </script>
+  </body>
+</html>

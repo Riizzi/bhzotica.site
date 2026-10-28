@@ -1,0 +1,70 @@
+---
+// Hero: tabela de acuidade desfocada; o óculos (que segue o mouse/dedo) põe tudo em foco.
+const rows = [
+  { t: 'B H Z', a: '0,1', c: 'r1' },
+  { t: 'Ó P T I C A', a: '0,2', c: 'r2' },
+  { t: 'ÓCULOS DE GRAU E DE SOL', a: '0,4', c: 'r3' },
+  { t: 'LENTES DE CONTATO E MULTIFOCAIS', a: '0,6', c: 'r4' },
+  { t: 'STREET SHOPPING PLANALTO, BH', a: '1,0', c: 'r5' },
+];
+---
+<div class="chart" data-chart>
+  <h1 class="chart-layer chart-blur" aria-label="BHZ Óptica: óculos de grau e de sol, lentes de contato e multifocais no Street Shopping Planalto, em Belo Horizonte">
+    {rows.map((r) => (
+      <span class={`row ${r.c}`} aria-hidden="true"><span class="row-t">{r.t}</span><span class="row-a">{r.a}</span></span>
+    ))}
+  </h1>
+  <div class="chart-layer chart-sharp" aria-hidden="true">
+    {rows.map((r) => (
+      <span class={`row ${r.c}`}><span class="row-t">{r.t}</span><span class="row-a">{r.a}</span></span>
+    ))}
+  </div>
+  <svg class="chart-frame" viewBox="-10 -10 480 220" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+      <circle cx="115" cy="100" r="100" />
+      <circle cx="345" cy="100" r="100" />
+      <path d="M205 78 Q230 58 255 78" />
+      <path d="M17 78 L2 70" /><path d="M443 78 L458 70" />
+    </g>
+  </svg>
+</div>
+
+<script>
+  const chart = document.querySelector<HTMLElement>('[data-chart]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (chart && !reduce) {
+    chart.classList.add('is-live');
+    let R = 100, W = 0, Hh = 0;
+    let x = 0, y = 0, tx = 0, ty = 0, lastInput = -1e9, t0 = performance.now(), running = false, raf = 0;
+    const measure = () => {
+      const r = chart.getBoundingClientRect();
+      W = r.width; Hh = r.height;
+      R = W < 640 ? Math.max(58, W * 0.17) : Math.min(130, W * 0.105);
+      chart.style.setProperty('--R', R + 'px');
+      if (!x) { x = W * 0.5; y = Hh * 0.28; }
+    };
+    const set = (px: number, py: number) => { tx = px; ty = py; lastInput = performance.now(); };
+    chart.addEventListener('pointermove', (e) => {
+      const r = chart.getBoundingClientRect(); set(e.clientX - r.left, e.clientY - r.top);
+    });
+    chart.addEventListener('touchmove', (e) => {
+      const r = chart.getBoundingClientRect(), p = e.touches[0]; set(p.clientX - r.left, p.clientY - r.top);
+    }, { passive: true });
+    const tick = (now: number) => {
+      if (now - lastInput > 2600) {
+        const t = (now - t0) / 1000;
+        tx = W * 0.5 + Math.sin(t * 0.42) * W * 0.3;
+        ty = Hh * 0.42 + Math.sin(t * 0.84) * Hh * 0.3;
+      }
+      const k = now - lastInput < 2600 ? 0.22 : 0.05;
+      x += (tx - x) * k; y += (ty - y) * k;
+      chart.style.setProperty('--x', x.toFixed(1) + 'px');
+      chart.style.setProperty('--y', y.toFixed(1) + 'px');
+      raf = requestAnimationFrame(tick);
+    };
+    const start = () => { if (!running) { running = true; raf = requestAnimationFrame(tick); } };
+    const stop = () => { running = false; cancelAnimationFrame(raf); };
+    measure(); window.addEventListener('resize', measure);
+    new IntersectionObserver(([en]) => (en.isIntersecting ? start() : stop())).observe(chart);
+  }
+</script>
