@@ -226,7 +226,7 @@ button { font: inherit; color: inherit; }
   [data-reveal] { clip-path: inset(12% 0 0 0 round var(--r-lg)); transition: clip-path 1.2s var(--ease); }
   [data-reveal] img, [data-reveal] video { transform: scale(1.08); transition: transform 1.5s var(--ease); }
   [data-reveal].is-in { clip-path: inset(0 0 0 0 round var(--r-lg)); }
-  figure[data-reveal].is-in { clip-path: inset(0 0 -60px 0 round var(--r-lg)); }
+  figure[data-reveal].is-in { clip-path: inset(0 0 -90px 0 round var(--r-lg)); }
   [data-reveal].is-in img, [data-reveal].is-in video { transform: scale(1); }
 }
 
