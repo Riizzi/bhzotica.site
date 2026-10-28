@@ -1,6 +1,8 @@
 ---
-import '@fontsource-variable/archivo/standard.css';
-import '@fontsource-variable/archivo/standard-italic.css';
+import '@fontsource-variable/inter-tight';
+import '@fontsource-variable/inter-tight/wght-italic.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import PixelGlasses from '../components/PixelGlasses.astro';
@@ -9,6 +11,11 @@ import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL } from 
 
 interface Props { title: string; description: string; current?: 'home' | 'espaco' }
 const { title, description, current = 'home' } = Astro.props;
+const nav = [
+  { href: '/#colecao', label: 'Coleção' },
+  { href: '/#lentes', label: 'Lentes' },
+  { href: '/espaco', label: 'O espaço', key: 'espaco' },
+];
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -17,73 +24,112 @@ const { title, description, current = 'home' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#D0111B" />
+    <meta name="theme-color" content="#F5F3EF" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/img/fachada.jpg" />
+    <meta property="og:image" content="/img/og.jpg" />
     <meta property="og:locale" content="pt_BR" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org', '@type': 'Optician', name: 'BHZ Óptica',
-      telephone: '+55 31 3324-5968', image: '/img/fachada.jpg',
+      telephone: '+55 31 3324-5968', image: '/img/og.jpg',
       address: { '@type': 'PostalAddress', streetAddress: 'Av. Dr. Cristiano Guimarães, 1691 - Street Shopping Planalto', addressLocality: 'Belo Horizonte', addressRegion: 'MG', postalCode: '31730-300', addressCountry: 'BR' },
       paymentAccepted: 'Cartão de crédito, cartão de débito, NFC'
     })} />
   </head>
-  <body>
+  <body class={`page-${current}`}>
     <a class="skip" href="#conteudo">Pular para o conteúdo</a>
-    <header class="site-header">
-      <div class="wrap header-row">
-        <Logo />
-        <nav aria-label="Principal">
-          <ul>
-            <li><a href="/" aria-current={current === 'home' ? 'page' : undefined}>Início</a></li>
-            <li><a href="/#lentes">Lentes</a></li>
-            <li><a href="/espaco" aria-current={current === 'espaco' ? 'page' : undefined}>O espaço</a></li>
-            <li><a href="/#visite">Como chegar</a></li>
-          </ul>
+
+    <header class="site-header" data-header>
+      <div class="header-row">
+        <nav class="nav-main" aria-label="Principal">
+          {nav.map((n) => <a href={n.href} aria-current={n.key === current ? 'page' : undefined}>{n.label}</a>)}
         </nav>
-        <a class="btn btn-red btn-sm header-cta" href="/#orcamento">Fazer orçamento</a>
+        <Logo class="header-logo" />
+        <div class="nav-side">
+          <a href="tel:+553133245968" class="nav-phone">{PHONE_DISPLAY}</a>
+          <a href="/#atendimento" class="nav-cta">Atendimento</a>
+        </div>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn>
+          <span class="menu-btn-label">Menu</span><span class="menu-btn-icon" aria-hidden="true"></span>
+        </button>
       </div>
     </header>
+
+    <div class="menu" id="menu" data-menu hidden>
+      <nav aria-label="Menu">
+        <a href="/">Início</a>
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+        <a href="/#atendimento">Atendimento</a>
+      </nav>
+      <p class="menu-foot">{ADDRESS_L1}<br />{ADDRESS_L2}<br /><a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
+    </div>
 
     <main id="conteudo"><slot /></main>
 
     <footer class="site-footer">
-      <div class="wrap footer-grid">
-        <div class="footer-brand">
-          <PixelGlasses cols={40} class="footer-mark" />
-          <p class="footer-word"><b>BHZ</b> Óptica</p>
+      <div class="wrap">
+        <div class="footer-top">
+          <p class="footer-say">Passe na loja para provar.</p>
+          <div class="footer-cols">
+            <div>
+              <h2 class="footer-h">Loja</h2>
+              <p>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
+              <p><a href={MAPS_URL} target="_blank" rel="noopener">Ver no mapa</a></p>
+            </div>
+            <div>
+              <h2 class="footer-h">Contato</h2>
+              <p><a href="tel:+553133245968">{PHONE_DISPLAY}</a><br /><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></p>
+            </div>
+            <div>
+              <h2 class="footer-h">Navegue</h2>
+              <p><a href="/">Início</a><br /><a href="/#colecao">Coleção</a><br /><a href="/#lentes">Lentes</a><br /><a href="/espaco">O espaço</a></p>
+            </div>
+          </div>
         </div>
-        <div>
-          <h2 class="footer-h">Endereço</h2>
-          <p>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</p>
-          <p><a href={MAPS_URL} target="_blank" rel="noopener">Abrir no Google Maps</a></p>
+        <div class="footer-mark" aria-hidden="true">
+          <PixelGlasses cols={64} class="footer-glasses" />
+          <span class="footer-word"><b>BHZ</b> Óptica</span>
         </div>
-        <div>
-          <h2 class="footer-h">Contato</h2>
-          <p><a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
-          <p><a href={wa()} target="_blank" rel="noopener">WhatsApp</a></p>
+        <div class="footer-base">
+          <p>© {new Date().getFullYear()} BHZ Óptica. Empresa que acolhe a comunidade LGBTQ+.</p>
+          <p class="footer-credit">Site por <a href="https://github.com/Riizzi" target="_blank" rel="noopener">João Pedro Rizzi</a><svg class="credit-tree" viewBox="0 0 24 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L14 10 L12.8 10.6 L16 17 L14.4 17.6 L18 25 L16.2 25.6 L20 33 L18.2 33.4 L22 40 Q20.5 41.2 17 40.2 L13 41 L13 46 L11 46 L11 41 L4 41 L7 36 L5.2 35.4 L8.2 29 L6.4 28.4 L9 22 L7.6 21.4 L10 14 L9 13.4 Z"/></svg></p>
         </div>
-        <div>
-          <h2 class="footer-h">Páginas</h2>
-          <p><a href="/">Início</a><br /><a href="/espaco">O espaço</a><br /><a href="/#orcamento">Orçamento</a></p>
-        </div>
-      </div>
-      <div class="wrap footer-base">
-        <p>© {new Date().getFullYear()} BHZ Óptica. Empresa que acolhe a comunidade LGBTQ+.</p>
-        <p class="footer-credit">Site por <a href="https://github.com/Riizzi" target="_blank" rel="noopener">João Pedro Rizzi</a><svg class="credit-tree" viewBox="0 0 24 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 L14 10 L12.8 10.6 L16 17 L14.4 17.6 L18 25 L16.2 25.6 L20 33 L18.2 33.4 L22 40 Q20.5 41.2 17 40.2 L13 41 L13 46 L11 46 L11 41 L4 41 L7 36 L5.2 35.4 L8.2 29 L6.4 28.4 L9 22 L7.6 21.4 L10 14 L9 13.4 Z"/></svg></p>
       </div>
     </footer>
 
-    <a class="wa-float" href={wa()} target="_blank" rel="noopener" aria-label="Fazer orçamento pelo WhatsApp">
-      <WaIcon /><span>Orçamento</span>
+    <a class="wa-float" href={wa()} target="_blank" rel="noopener" aria-label="Conversar pelo WhatsApp" data-wa-float>
+      <WaIcon />
     </a>
 
     <script>
-      const h = document.querySelector('.site-header');
-      const onScroll = () => h?.classList.toggle('is-scrolled', window.scrollY > 8);
+      const header = document.querySelector<HTMLElement>('[data-header]')!;
+      const wa = document.querySelector<HTMLElement>('[data-wa-float]')!;
+      const onScroll = () => {
+        const y = window.scrollY;
+        header.classList.toggle('is-scrolled', y > 24);
+        wa.classList.toggle('is-visible', y > window.innerHeight * 0.6);
+      };
       onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+      const btn = document.querySelector<HTMLButtonElement>('[data-menu-btn]')!;
+      const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+      const setMenu = (open: boolean) => {
+        btn.setAttribute('aria-expanded', String(open));
+        btn.querySelector('.menu-btn-label')!.textContent = open ? 'Fechar' : 'Menu';
+        document.documentElement.classList.toggle('menu-open', open);
+        if (open) { menu.hidden = false; requestAnimationFrame(() => menu.classList.add('is-open')); }
+        else { menu.classList.remove('is-open'); setTimeout(() => { if (!menu.classList.contains('is-open')) menu.hidden = true; }, 350); }
+      };
+      btn.addEventListener('click', () => setMenu(btn.getAttribute('aria-expanded') !== 'true'));
+      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+      // Revelação das imagens marcadas com [data-reveal] (uma vez, ao entrar na tela)
+      const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+      }), { rootMargin: '0px 0px -12% 0px' });
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
     </script>
   </body>
 </html>

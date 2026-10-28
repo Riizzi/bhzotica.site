@@ -1,0 +1,58 @@
+---
+// Cena com rolagem: colagem editorial; a imagem das lentes cresce do painel direito até ocupar a tela.
+import Img from './Img.astro';
+---
+<section class="scene" id="lentes" data-scene aria-labelledby="scene-h">
+  <div class="scene-sticky" data-scene-sticky>
+    <div class="scene-left" data-scene-fade>
+      <Img name="interior" alt="Interior da BHZ Óptica com balcões de vidro e espelhos" sizes="30vw" />
+    </div>
+    <div class="scene-inset" data-scene-fade>
+      <Img name="sol-2" alt="Óculos aviador Ray-Ban sobre o estojo de couro" sizes="22vw" />
+    </div>
+    <div class="scene-text" data-scene-fade>
+      <h2 class="scene-h" id="scene-h">Cada distância pede uma lente.</h2>
+      <p>Longe, meia distância, perto. A lente certa resolve as três sem você precisar trocar de óculos.</p>
+    </div>
+
+    <div class="scene-full">
+      <div class="scene-full-bg" aria-hidden="true"></div>
+      <Img name="lentes" alt="Comparação: a lente bifocal tem duas zonas, longe e perto; a multifocal tem longe, médio e perto em transição contínua" sizes="100vw" class="scene-full-img" />
+      <div class="scene-shade" aria-hidden="true"></div>
+    </div>
+
+    <div class="scene-captions">
+      <div class="scene-cap">
+        <h3>Bifocal</h3>
+        <p>Duas zonas na mesma lente: longe em cima, perto embaixo, com a divisão visível no vidro.</p>
+      </div>
+      <div class="scene-cap">
+        <h3>Multifocal</h3>
+        <p>Longe, médio e perto em transição contínua e sem linha aparente. Indicada para quem começou a ter dificuldade de enxergar de perto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const scene = document.querySelector<HTMLElement>('[data-scene]');
+  const sticky = document.querySelector<HTMLElement>('[data-scene-sticky]');
+  if (scene && sticky) {
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = scene.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = clamp(-r.top / Math.max(1, r.height - vh));
+      sticky.style.setProperty('--e', ease(clamp((p - 0.1) / 0.5)).toFixed(4));
+      sticky.style.setProperty('--f', clamp((p - 0.06) / 0.3).toFixed(4));
+      sticky.style.setProperty('--c', ease(clamp((p - 0.66) / 0.18)).toFixed(4));
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+</script>

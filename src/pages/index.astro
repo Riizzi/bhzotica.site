@@ -1,16 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
 import EyeChart from '../components/EyeChart.astro';
-import Band from '../components/Band.astro';
+import LensScene from '../components/LensScene.astro';
+import Img from '../components/Img.astro';
 import PixelGlasses from '../components/PixelGlasses.astro';
 import WaIcon from '../components/WaIcon.astro';
-import { wa, PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
+import { PHONE_DISPLAY, ADDRESS_L1, ADDRESS_L2, ADDRESS_L3, MAPS_URL, WAZE_URL, MAPS_EMBED } from '../data';
 
-const sol = [
-  { src: '/img/sol-1', alt: 'Óculos de sol Ray-Ban preto fosco com lente degradê' },
-  { src: '/img/sol-2-aviador', alt: 'Óculos aviador Ray-Ban com lente G-15 sobre o estojo de couro' },
-  { src: '/img/sol-3', alt: 'Óculos de sol Ray-Ban preto com hastes azuis' },
-  { src: '/img/sol-4', alt: 'Óculos de sol Ray-Ban quadrado preto com lente degradê' },
+const colecao = [
+  { img: 'sol-2', brand: 'Ray-Ban', desc: 'Aviador metálico, lente G-15', cls: 'c-a', alt: 'Óculos aviador Ray-Ban preto com lente G-15 sobre estojo de couro' },
+  { img: 'sol-1', brand: 'Ray-Ban', desc: 'Quadrado em acetato fosco, lente degradê', cls: 'c-b', alt: 'Óculos de sol Ray-Ban quadrado preto fosco com lente degradê' },
+  { img: 'sol-4', brand: 'Ray-Ban', desc: 'Formato clássico, lente degradê', cls: 'c-c', alt: 'Óculos de sol Ray-Ban preto com lente degradê e hastes metálicas' },
+  { img: 'sol-3', brand: 'Ray-Ban', desc: 'Retangular com hastes em azul', cls: 'c-d', alt: 'Óculos de sol Ray-Ban preto com hastes azuis' },
+];
+
+const servicos = [
+  { t: 'Óculos de grau', d: 'Armação e lentes escolhidas para a sua receita e o seu rosto.', img: 'interior' },
+  { t: 'Óculos de sol', d: 'Ray-Ban e outras marcas, com lentes degradê e G-15.', img: 'sol-4' },
+  { t: 'Lentes multifocais', d: 'Varilux e Zeiss para enxergar de longe a perto com a mesma lente.', img: 'lentes' },
+  { t: 'Lentes de contato', d: 'Linha Acuvue: diárias, quinzenais, mensais e para astigmatismo.', img: 'contato' },
 ];
 
 const reviews = [
@@ -21,196 +29,178 @@ const reviews = [
 ---
 <Base
   title="BHZ Óptica | Óculos de grau, de sol e lentes no Planalto, BH"
-  description="Óptica no Street Shopping Planalto, em Belo Horizonte: óculos de grau e de sol, lentes multifocais e lentes de contato. Faça seu orçamento pelo WhatsApp."
+  description="Óptica no Street Shopping Planalto, em Belo Horizonte: óculos de grau e de sol, lentes multifocais e lentes de contato."
 >
   <!-- HERO -->
   <section class="hero">
     <EyeChart />
     <div class="wrap hero-foot">
-      <p class="hero-lede">Armações, lentes de grau, óculos de sol e lentes de contato no Street Shopping Planalto. Traga sua receita e escolha com calma.</p>
-      <div class="hero-actions">
-        <a class="btn btn-red" href={wa()} target="_blank" rel="noopener"><WaIcon />Fazer orçamento no WhatsApp</a>
-        <a class="btn btn-ghost" href="/espaco">Conhecer o espaço</a>
+      <p class="hero-lede">Óculos de grau e de sol, lentes multifocais e de contato no Street Shopping Planalto, em Belo Horizonte.</p>
+      <div class="hero-links">
+        <a class="btn" href="#colecao">Ver a coleção</a>
+        <a class="link-arrow" href="/espaco">Conhecer a loja</a>
       </div>
     </div>
   </section>
 
-  <!-- FAIXA: LENTES -->
-  <Band bg="/img/lentes-bifocal-multifocal.webp" id="lentes">
-    <picture slot="media">
-      <source srcset="/img/lentes-bifocal-multifocal.webp" type="image/webp" />
-      <img src="/img/lentes-bifocal-multifocal.jpg" width="540" height="436" alt="Comparação Varilux: a lente bifocal tem duas zonas, longe e perto; a multifocal tem longe, médio e perto" loading="lazy" />
-    </picture>
-    <h2 class="h2">Uma lente para cada distância</h2>
-    <dl class="lens-compare">
-      <div>
-        <dt>Bifocal</dt>
-        <dd>Duas zonas na mesma lente: longe em cima, perto embaixo. A divisão entre elas aparece no vidro.</dd>
-      </div>
-      <div>
-        <dt>Multifocal</dt>
-        <dd>Longe, médio e perto em transição contínua, sem linha aparente. Indicada para quem começou a ter dificuldade de enxergar de perto.</dd>
-      </div>
-    </dl>
-    <a class="btn btn-red" href={wa('Olá! Vim pelo site e queria um orçamento de lentes multifocais.')} target="_blank" rel="noopener"><WaIcon />Orçamento de multifocal</a>
-  </Band>
+  <!-- CENA DAS LENTES -->
+  <LensScene />
 
-  <!-- VITRINE -->
-  <section class="section vitrine" aria-labelledby="vitrine-h">
+  <!-- COLEÇÃO -->
+  <section class="section colecao" id="colecao" aria-labelledby="col-h">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="h2" id="vitrine-h">Na vitrine</h2>
-        <p>Ray-Ban, Varilux, Zeiss, Acuvue e outras marcas. Experimente na loja, com espelho e cadeira para provar sem pressa.</p>
-      </div>
-
-      <div class="vitrine-grid">
-        <article class="v-sol">
-          <div class="v-head">
-            <h3 class="h3">Óculos de sol</h3>
-            <p>Modelos clássicos e esportivos, com lente degradê ou G-15.</p>
-          </div>
-          <ul class="sol-strip" aria-label="Óculos de sol da vitrine">
-            {sol.map((s) => (
-              <li>
-                <picture>
-                  <source srcset={`${s.src}.webp`} type="image/webp" />
-                  <img src={`${s.src}.jpg`} width="540" height="436" alt={s.alt} loading="lazy" />
-                </picture>
-              </li>
-            ))}
-          </ul>
-        </article>
-
-        <article class="v-grau">
-          <h3 class="h3">Óculos de grau</h3>
-          <p>Armação e lentes sob medida para a sua receita. Traga a receita do oftalmologista e a gente monta o orçamento com você.</p>
-          <a class="link" href={wa('Olá! Tenho uma receita e queria orçamento de óculos de grau.')} target="_blank" rel="noopener">Pedir orçamento com receita</a>
-        </article>
-
-        <article class="v-contato">
-          <picture>
-            <source srcset="/img/lentes-de-contato.webp" type="image/webp" />
-            <img src="/img/lentes-de-contato.jpg" width="540" height="436" alt="Caixas de lentes de contato Acuvue: Oasys, Moist, Vita, Define e TruEye" loading="lazy" />
-          </picture>
-          <div>
-            <h3 class="h3">Lentes de contato</h3>
-            <p>Linha Acuvue: diárias, quinzenais, mensais, para astigmatismo e multifocais.</p>
-            <a class="link" href={wa('Olá! Queria saber preço e disponibilidade de lentes de contato.')} target="_blank" rel="noopener">Consultar disponibilidade</a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROMO -->
-  <section class="promo" aria-labelledby="promo-h">
-    <div class="wrap promo-inner">
-      <div>
-        <h2 class="promo-h" id="promo-h">Compre 1, ganhe outro</h2>
-        <p>Na compra de armação com lente, a segunda armação é por nossa conta. Consulte as condições na loja.</p>
-      </div>
-      <a class="btn btn-white" href={wa('Olá! Vi a promoção "Compre 1, ganhe outro" no site. Como funciona?')} target="_blank" rel="noopener"><WaIcon />Perguntar sobre a promoção</a>
-    </div>
-    <PixelGlasses cols={56} class="promo-mark" />
-  </section>
-
-  <!-- ORÇAMENTO -->
-  <section class="section orcamento" id="orcamento" aria-labelledby="orc-h">
-    <div class="wrap orc-grid">
-      <div class="orc-intro">
-        <h2 class="h2" id="orc-h">Peça um orçamento</h2>
-        <p>Marque o que você procura. A mensagem fica pronta ao lado e é só enviar no WhatsApp da loja.</p>
-        <p class="orc-phone">Prefere ligar? <a href="tel:+553133245968">{PHONE_DISPLAY}</a></p>
-      </div>
-
-      <form class="orc-form" data-orc>
-        <fieldset>
-          <legend>O que você procura?</legend>
-          <div class="chips">
-            {['Óculos de grau', 'Óculos de sol', 'Lentes multifocais', 'Lentes de contato'].map((o) => (
-              <label class="chip"><input type="checkbox" name="item" value={o} /><span>{o}</span></label>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Você já tem receita?</legend>
-          <div class="chips">
-            <label class="chip"><input type="radio" name="receita" value="sim" /><span>Tenho receita</span></label>
-            <label class="chip"><input type="radio" name="receita" value="nao" /><span>Ainda não</span></label>
-          </div>
-        </fieldset>
-        <label class="field">
-          <span>Seu nome <small>(opcional)</small></span>
-          <input type="text" name="nome" autocomplete="given-name" />
-        </label>
-
-        <div class="bubble" aria-live="polite">
-          <span class="bubble-to">Mensagem para BHZ Óptica</span>
-          <p data-preview>Olá! Vim pelo site e gostaria de fazer um orçamento.</p>
+      <header class="sec-head">
+        <h2 class="display" id="col-h">A coleção</h2>
+        <div class="sec-head-side">
+          <p class="lede">Armações para provar com calma, diante do espelho, com alguém que entende de lente ao seu lado.</p>
+          <p class="brands">Ray-Ban<span aria-hidden="true">/</span>Varilux<span aria-hidden="true">/</span>Zeiss<span aria-hidden="true">/</span>Acuvue<span aria-hidden="true">/</span>Atitude</p>
         </div>
-        <a class="btn btn-red btn-block" data-send href={wa()} target="_blank" rel="noopener"><WaIcon />Enviar no WhatsApp</a>
-      </form>
-    </div>
-  </section>
+      </header>
 
-  <!-- ESPAÇO (teaser) -->
-  <Band bg="/img/video-poster.jpg" class="band-espaco" flip>
-    <video slot="media" src="/video/espaco.mp4" poster="/img/video-poster.jpg" autoplay muted loop playsinline width="368" height="496" aria-label="Vídeo mostrando a fachada e o interior da loja"></video>
-    <h2 class="h2">Venha provar</h2>
-    <p>Balcões de vidro com as armações à mostra, espelhos em cada lugar e cadeiras para escolher sentado. A loja fica dentro do Street Shopping Planalto, com estacionamento gratuito.</p>
-    <a class="btn btn-ghost" href="/espaco">Conhecer o espaço</a>
-  </Band>
-
-  <!-- AVALIAÇÕES -->
-  <section class="section reviews" aria-labelledby="rev-h">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="h2" id="rev-h">Quem já passou por aqui</h2>
-        <p><a class="link" href={MAPS_URL} target="_blank" rel="noopener">Ver todas as avaliações no Google</a></p>
-      </div>
-      <div class="review-grid">
-        {reviews.map((r, i) => (
-          <figure class={`review review-${i + 1}`}>
-            <span class="stars" role="img" aria-label="5 de 5 estrelas">★★★★★</span>
-            <blockquote><p>{r.text}</p></blockquote>
-            <figcaption><b>{r.name}</b><span>no Google, {r.when}</span></figcaption>
+      <div class="col-grid">
+        {colecao.map((c) => (
+          <figure class={`col-item ${c.cls}`}>
+            <div class="col-img" data-reveal>
+              <Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" />
+            </div>
+            <figcaption><b>{c.brand}</b><span>{c.desc}</span></figcaption>
           </figure>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- VISITE -->
-  <section class="section visite" id="visite" aria-labelledby="vis-h">
-    <div class="wrap visite-grid">
-      <div>
-        <h2 class="h2" id="vis-h">Como chegar</h2>
+  <!-- SERVIÇOS -->
+  <section class="section servicos" aria-labelledby="srv-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 class="display" id="srv-h">O que fazemos</h2>
+        <div class="sec-head-side"><p class="lede">Do primeiro óculos à troca de lente, com orientação para escolher a armação e a lente certas para a sua receita.</p></div>
+      </header>
+      <ul class="index-list" data-index>
+        {servicos.map((s) => (
+          <li class="index-row" data-img={`/img/${s.img}-800.webp`}>
+            <h3 class="index-t">{s.t}</h3>
+            <p class="index-d">{s.d}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="index-float" aria-hidden="true" data-index-float><img alt="" /></div>
+    </div>
+  </section>
+
+  <!-- PROMO -->
+  <section class="promo" aria-labelledby="promo-h">
+    <div class="wrap promo-inner">
+      <h2 class="promo-h" id="promo-h">Compre 1,<br />ganhe outro.</h2>
+      <div class="promo-side">
+        <p>Na compra de armação com lente, a segunda armação é por nossa conta.</p>
+        <p class="promo-note">Condições na loja.</p>
+      </div>
+    </div>
+    <PixelGlasses cols={72} class="promo-mark" />
+  </section>
+
+  <!-- ESPAÇO -->
+  <section class="section espaco-feat" aria-labelledby="esp-h">
+    <div class="wrap espaco-grid">
+      <div class="esp-video" data-reveal>
+        <video src="/video/espaco.mp4" poster="/img/v1-800.webp" autoplay muted loop playsinline aria-label="Vídeo da fachada e do interior da loja"></video>
+      </div>
+      <div class="esp-photo" data-reveal>
+        <Img name="v75" alt="Balcão de vidro com armações dentro da loja" sizes="(min-width: 900px) 28vw, 60vw" />
+      </div>
+      <div class="esp-copy">
+        <h2 class="display" id="esp-h">Venha provar</h2>
+        <p class="lede">Balcões de vidro com as armações à mostra, espelho em cada lugar e cadeiras para escolher sem pressa. Estacionamento gratuito no próprio shopping.</p>
+        <a class="link-arrow" href="/espaco">Conhecer o espaço</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIAÇÕES -->
+  <section class="section reviews" aria-labelledby="rev-h">
+    <div class="wrap">
+      <h2 class="sr-only" id="rev-h">Avaliações no Google</h2>
+      <div class="rev-stage" data-reviews>
+        {reviews.map((r, i) => (
+          <figure class="rev" id={`rev-${i}`} hidden={i !== 0}>
+            <blockquote><p>{r.text}</p></blockquote>
+          </figure>
+        ))}
+      </div>
+      <div class="rev-tabs" role="tablist" aria-label="Escolher avaliação">
+        {reviews.map((r, i) => (
+          <button role="tab" type="button" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`rev-${i}`} data-rev={i}>
+            <b>{r.name}</b><span>no Google, {r.when}</span>
+          </button>
+        ))}
+      </div>
+      <p class="rev-more"><span class="stars" aria-hidden="true">★★★★★</span><a href={MAPS_URL} target="_blank" rel="noopener">Ver todas as avaliações no Google</a></p>
+    </div>
+  </section>
+
+  <!-- ATENDIMENTO -->
+  <section class="section atendimento" id="atendimento" aria-labelledby="at-h">
+    <div class="wrap at-grid">
+      <div class="at-info">
+        <h2 class="display" id="at-h">Atendimento</h2>
+        <p class="lede">Conte o que você procura e continue a conversa com a loja pelo WhatsApp.</p>
         <dl class="info">
           <div><dt>Endereço</dt><dd>{ADDRESS_L1}<br />{ADDRESS_L2}<br />{ADDRESS_L3}</dd></div>
-          <div><dt>Telefone e WhatsApp</dt><dd><a href="tel:+553133245968">{PHONE_DISPLAY}</a></dd></div>
+          <div><dt>Telefone</dt><dd><a href="tel:+553133245968">{PHONE_DISPLAY}</a></dd></div>
           <div><dt>Horário</dt><dd><span class="todo-inline">a confirmar com a loja</span></dd></div>
-          <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no próprio shopping</dd></div>
-          <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação (NFC)</dd></div>
-          <div><dt>Acessibilidade</dt><dd>Entrada, assento, banheiro e vaga para cadeira de rodas</dd></div>
+          <div><dt>Estacionamento</dt><dd>Gratuito, na rua e no shopping</dd></div>
+          <div><dt>Pagamento</dt><dd>Crédito, débito e aproximação</dd></div>
         </dl>
-        <div class="visite-actions">
-          <a class="btn btn-red" href={MAPS_URL} target="_blank" rel="noopener">Abrir no Google Maps</a>
-          <a class="btn btn-ghost" href={WAZE_URL} target="_blank" rel="noopener">Abrir no Waze</a>
+      </div>
+
+      <form class="at-form" data-orc>
+        <fieldset>
+          <legend>O que você procura?</legend>
+          <div class="opts">
+            {['Óculos de grau', 'Óculos de sol', 'Lentes multifocais', 'Lentes de contato'].map((o) => (
+              <label class="opt"><input type="checkbox" name="item" value={o} /><span>{o}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Você já tem receita?</legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="receita" value="sim" /><span>Tenho receita</span></label>
+            <label class="opt"><input type="radio" name="receita" value="nao" /><span>Ainda não</span></label>
+          </div>
+        </fieldset>
+        <label class="field">
+          <span>Seu nome <small>(opcional)</small></span>
+          <input type="text" name="nome" autocomplete="given-name" />
+        </label>
+        <div class="msg" aria-live="polite">
+          <span class="msg-label">Sua mensagem</span>
+          <p data-preview>Olá! Vim pelo site e gostaria de fazer um orçamento.</p>
         </div>
-      </div>
-      <div class="map">
-        <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+        <a class="btn btn-solid btn-block" data-send href="https://wa.me/553133245968?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noopener"><WaIcon />Enviar pelo WhatsApp</a>
+      </form>
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section class="map-strip" id="visite" aria-label="Mapa">
+    <iframe src={MAPS_EMBED} title="Mapa: BHZ Óptica no Street Shopping Planalto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="map-card">
+      <p><b>{ADDRESS_L1}</b><br />{ADDRESS_L2}</p>
+      <p class="map-links"><a href={MAPS_URL} target="_blank" rel="noopener">Google Maps</a><a href={WAZE_URL} target="_blank" rel="noopener">Waze</a></p>
     </div>
   </section>
 </Base>
 
 <script>
+  // Mensagem do orçamento
   const form = document.querySelector<HTMLFormElement>('[data-orc]');
   if (form) {
     const preview = form.querySelector('[data-preview]')!;
     const send = form.querySelector<HTMLAnchorElement>('[data-send]')!;
-    const list = (a: string[]) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a.at(-1);
+    const list = (a: string[]) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a.at(-1));
     const build = () => {
       const fd = new FormData(form);
       const items = (fd.getAll('item') as string[]).map((s) => s.toLowerCase());
@@ -225,5 +215,29 @@ const reviews = [
     };
     form.addEventListener('input', build);
     form.addEventListener('submit', (e) => e.preventDefault());
+  }
+
+  // Avaliações
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-rev]');
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    tabs.forEach((o) => {
+      const on = o === t;
+      o.setAttribute('aria-selected', String(on));
+      document.getElementById(o.getAttribute('aria-controls')!)!.hidden = !on;
+    });
+  }));
+
+  // Lista de serviços: imagem que acompanha o cursor (só com mouse)
+  const list = document.querySelector<HTMLElement>('[data-index]');
+  const float = document.querySelector<HTMLElement>('[data-index-float]');
+  if (list && float && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const img = float.querySelector('img')!;
+    let x = 0, y = 0, tx = 0, ty = 0, raf = 0;
+    const loop = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; float.style.transform = `translate(${x}px, ${y}px)`; raf = requestAnimationFrame(loop); };
+    list.querySelectorAll<HTMLElement>('.index-row').forEach((row) => {
+      row.addEventListener('mouseenter', () => { img.src = row.dataset.img!; float.classList.add('is-on'); });
+    });
+    list.addEventListener('mousemove', (e) => { tx = e.clientX + 24; ty = e.clientY - 120; if (!raf) { x = tx; y = ty; raf = requestAnimationFrame(loop); } });
+    list.addEventListener('mouseleave', () => { float.classList.remove('is-on'); cancelAnimationFrame(raf); raf = 0; });
   }
 </script>

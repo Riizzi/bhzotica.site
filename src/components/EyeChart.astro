@@ -20,7 +20,7 @@ const rows = [
     ))}
   </div>
   <svg class="chart-frame" viewBox="-10 -10 480 220" aria-hidden="true">
-    <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round">
+    <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
       <circle cx="115" cy="100" r="100" />
       <circle cx="345" cy="100" r="100" />
       <path d="M205 78 Q230 58 255 78" />
@@ -39,7 +39,7 @@ const rows = [
     const measure = () => {
       const r = chart.getBoundingClientRect();
       W = r.width; Hh = r.height;
-      R = W < 640 ? Math.max(58, W * 0.17) : Math.min(130, W * 0.105);
+      R = W < 640 ? Math.max(58, W * 0.17) : Math.min(124, W * 0.095);
       chart.style.setProperty('--R', R + 'px');
       if (!x) { x = W * 0.5; y = Hh * 0.28; }
     };
