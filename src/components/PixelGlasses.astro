@@ -30,7 +30,16 @@ for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
 const minX = scatter ? -W * 0.34 : 0, minY = scatter ? -H * 0.3 : 0;
 const vb = `${minX} ${minY} ${W - minX} ${H - minY}`;
 const g = 0.14;
+// Um <path> por faixa de opacidade (em vez de um <rect> por pixel): o HTML fica bem mais leve.
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const groups = new Map<number, string[]>();
+for (const c of cells) {
+  const o = Math.round(c.o * 5) / 5;
+  const sz = r2(c.s - g);
+  const d = `M${r2(c.x + g / 2)} ${r2(c.y + g / 2)}h${sz}v${sz}h-${sz}z`;
+  (groups.get(o) ?? groups.set(o, []).get(o)!).push(d);
+}
 ---
 <svg class={`pixel-glasses ${cls}`} viewBox={vb} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'} fill="currentColor">
-  {cells.map((c) => <rect x={c.x + g / 2} y={c.y + g / 2} width={c.s - g} height={c.s - g} opacity={c.o} />)}
+  {[...groups].map(([o, ds]) => <path d={ds.join('')} opacity={o === 1 ? undefined : o} />)}
 </svg>

@@ -38,7 +38,7 @@ const servicos = [
       <div class="col-grid">
         {COLECAO.map((c, i) => (
           <figure class={`col-item c-${i}`}>
-            <div class="col-img" data-reveal><Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" /></div>
+            <div class="col-img" data-reveal={i > 0 ? true : undefined}><Img name={c.img} alt={c.alt} sizes="(min-width: 900px) 50vw, 100vw" eager={i === 0} /></div>
             <figcaption><b>{c.brand}</b><span>{c.desc}</span></figcaption>
           </figure>
         ))}

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bhz-optica.vercel.app/sitemap-index.xml
